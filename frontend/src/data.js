@@ -2,12 +2,12 @@
 export const profile = {
   name: "Dirushan",
   email: "rubakumardirushan@gmail.com",
-  location: "Jaffna, Sri Lanka",
+  location: "Sri Lanka",
   github: "https://github.com/shandiru",
   summary:
     "Software engineer and freelance MERN developer. Two years of experience and 70+ projects delivered.",
   about: [
-    "I am a software engineer from Jaffna, Sri Lanka, with a BSc (Hons) in Software Engineering from the University of Kelaniya.",
+    "I am a software engineer from Sri Lanka, with a BSc (Hons) in Software Engineering from the University of Kelaniya.",
     "For UK freelance clients I build MERN apps and websites from brief to launch. At Amplifyd in Colombo I work on Australian client projects, maintaining and improving Laravel and WordPress sites.",
   ],
 };
@@ -79,7 +79,7 @@ export const experience = [
   },
   {
     role: "Software Engineering Intern",
-    company: "AppsLanka, Jaffna",
+    company: "AppsLanka",
     period: "Feb 2024 to Aug 2024",
     points: [
       "Built admin panels with Filament and Laravel Livewire.",

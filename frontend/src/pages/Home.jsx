@@ -38,20 +38,33 @@ function Hero() {
 
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    gsap.timeline({ defaults: { duration: 0.5, ease: "power2.out" } })
-      .from("[data-hero-kicker]", { autoAlpha: 0, y: 8 })
-      .from("[data-hero-title]", { autoAlpha: 0, y: 12 }, "-=0.28")
-      .from("[data-hero-copy]", { autoAlpha: 0, y: 8 }, "-=0.3")
-      .from("[data-hero-action]", { autoAlpha: 0, y: 6, stagger: 0.06 }, "-=0.26")
-      .from("[data-hero-aside]", { autoAlpha: 0, y: 8, stagger: 0.06 }, "-=0.28");
+    gsap.timeline({ defaults: { duration: 0.48, ease: "power3.out" } })
+      .from("[data-hero-kicker]", { autoAlpha: 0, y: 10 })
+      .from("[data-hero-word]", {
+        autoAlpha: 0,
+        y: 26,
+        rotationX: -24,
+        transformPerspective: 700,
+        transformOrigin: "50% 100%",
+        stagger: 0.065,
+        duration: 0.72,
+      }, "-=0.18")
+      .from("[data-hero-copy]", { autoAlpha: 0, y: 10 }, "-=0.42")
+      .from("[data-hero-action]", { autoAlpha: 0, y: 8, stagger: 0.07 }, "-=0.3")
+      .from("[data-hero-aside]", { autoAlpha: 0, x: 12, stagger: 0.09 }, "-=0.32");
   }, { scope: heroRef });
 
   return (
     <section ref={heroRef} id="top" className={`${wrap} grid gap-10 pb-16 pt-20 md:grid-cols-[1.35fr_0.65fr] md:items-end md:gap-16 md:pb-24 md:pt-32`}>
       <div>
         <p data-hero-kicker className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-accent">Sri Lanka</p>
-        <h1 data-hero-title className="max-w-[18ch] text-[clamp(2.8rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.055em]">
-          I build websites and apps that scale.
+        <h1 aria-label="I build websites and apps that scale." className="max-w-[18ch] text-[clamp(2.8rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.055em]">
+          {["I", "build", "websites", "and", "apps", "that", "scale."].map((word, index) => (
+            <span key={word}>
+              <span data-hero-word="" aria-hidden="true" className="inline-block">{word}</span>
+              {index < 6 ? " " : null}
+            </span>
+          ))}
         </h1>
         <p data-hero-copy className="mt-7 max-w-[52ch] text-lg leading-8 text-muted">
           I build fast, secure applications with Laravel, React and Express, along with business websites in WordPress. I also set up and support Google Analytics and Search Console.
