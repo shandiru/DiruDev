@@ -1,6 +1,10 @@
 // In development, use Vite's /api proxy to avoid localhost host/port CORS mismatches.
 // Production builds use the configured backend URL.
-const BASE = (import.meta.env.DEV ? "" : import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+// Request paths already start with /api; accept a backend URL with or without
+// that suffix to prevent accidental requests to /api/api/...
+const BASE = (import.meta.env.DEV ? "" : import.meta.env.VITE_API_URL || "")
+  .replace(/\/+$/, "")
+  .replace(/\/api$/i, "");
 const TOKEN_KEY = "pf_admin_token";
 
 export const getToken = () => {
@@ -21,7 +25,7 @@ async function request(path, { method = "GET", body, auth = false } = {}) {
   try {
     res = await fetch(`${BASE}${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
   } catch {
-    throw new Error("Cannot reach the server. Is the backend running?");
+    throw new Error("Could not connect to the API. Check the backend deployment and its CLIENT_URL setting for this frontend domain.");
   }
   const data = await res.json().catch(() => null);
   if (!data || typeof data !== "object") {

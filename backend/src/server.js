@@ -13,7 +13,10 @@ const app = express();
 app.set("trust proxy", 1); // real visitor IP behind Render / Vercel / Nginx
 
 app.use(helmet());
-const origins = (process.env.CLIENT_URL || "http://localhost:5173").split(",").map((s) => s.trim());
+const origins = (process.env.CLIENT_URL || "http://localhost:5173")
+  .split(",")
+  .map((s) => s.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
 app.use(cors({ origin: origins }));
 app.use(express.json({ limit: "200kb" }));
 

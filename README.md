@@ -23,9 +23,9 @@ change it there and restart to change the password).
 - admins: the admin account (password is hashed)
 
 ## Deploying
-- Backend: set the same variables as .env on your host, set CLIENT_URL to your frontend URL
-  (comma separated for several). It trusts the proxy header so the real visitor IP/country is stored.
-- Frontend: set VITE_API_URL to the backend URL and build.
+- Backend: set the same variables as .env on your host, set CLIENT_URL to the frontend origin
+  (for example, https://your-site.vercel.app; no trailing slash). It trusts the proxy header so the real visitor IP/country is stored.
+- Frontend: set VITE_API_URL to the backend origin (for example, https://your-api.vercel.app; no /api suffix) and redeploy.
 - MongoDB Atlas: Network Access must allow your server's IP (or 0.0.0.0/0).
 
 ## Security note

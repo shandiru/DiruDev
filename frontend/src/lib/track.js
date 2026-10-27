@@ -1,7 +1,9 @@
 /* Sends visitor actions to the backend. The server adds IP + country itself.
    Tracking never throws or blocks the page. */
 // Keep local tracking same-origin through Vite's /api proxy.
-const BASE = (import.meta.env.DEV ? "" : import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const BASE = (import.meta.env.DEV ? "" : import.meta.env.VITE_API_URL || "")
+  .replace(/\/+$/, "")
+  .replace(/\/api$/i, "");
 
 function stored(storage, key) {
   try {
