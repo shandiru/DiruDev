@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/* Graphite, warm white and a sharp citron accent. */
+:root {
+  --bg: #090b0a;
+  --surface: #131715;
+  --line: #2a302c;
+  --ink: #f1f2ec;
+  --muted: #a7ada7;
+  --accent: #d3f36b;
+  --on-accent: #11150a;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --font-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  @keyframes ambient-drift {
+    0% { background-position: 0% 0%, 100% 100%; }
+    50% { background-position: 70% 20%, 30% 80%; }
+    100% { background-position: 100% 70%, 0% 20%; }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg text-ink font-sans text-base leading-relaxed antialiased;
+    position: relative;
+    overflow-x: hidden;
+    background-color: var(--bg);
+  }
+  body::before {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse 36rem 25rem at 24% 20%, color-mix(in srgb, var(--accent) 19%, transparent), transparent 72%),
+      radial-gradient(ellipse 34rem 28rem at 78% 72%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 74%);
+    background-size: 150% 150%, 160% 160%;
+    background-position: 0% 0%, 100% 100%;
+    animation: ambient-drift 32s ease-in-out infinite alternate;
+    content: "";
+  }
+  #root { position: relative; z-index: 1; min-height: 100vh; }
+  ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--ink); }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.project-panel {
+  background: var(--surface);
+}
+.project-panel::before {
+  position: absolute;
+  pointer-events: none;
+  top: 1.25rem;
+  bottom: 1.25rem;
+  left: 0;
+  width: 2px;
+  background: var(--accent);
+  content: "";
+}
+.project-panel:hover { border-color: var(--accent); }
+.project-badge { background: var(--accent); color: var(--on-accent); }
+.tech-viewport { overflow: hidden; }
+.tech-track { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body::before { animation: none; }
+  .tech-viewport { overflow-x: auto; }
+  .tech-track { transform: none !important; }
+  .tech-group[aria-hidden="true"] { display: none; }
+}
+
+/* Blog / markdown content */
+.prose-lite { color: var(--muted); font-size: 1.075rem; line-height: 1.8; overflow-wrap: anywhere; }
+.prose-lite > * + * { margin-top: 1.1em; }
+.prose-lite h1, .prose-lite h2, .prose-lite h3 { color: var(--ink); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; margin-top: 1.8em; }
+.prose-lite h1 { font-size: 1.9rem; } .prose-lite h2 { font-size: 1.5rem; } .prose-lite h3 { font-size: 1.2rem; }
+.prose-lite a { color: var(--accent); }
+.prose-lite strong { color: var(--ink); }
+.prose-lite ul { list-style: disc; padding-left: 1.4em; } .prose-lite ol { list-style: decimal; padding-left: 1.4em; }
+.prose-lite li + li { margin-top: 0.35em; }
+.prose-lite blockquote { border-left: 3px solid var(--accent); padding-left: 1em; color: var(--ink); }
+.prose-lite code { background: var(--surface); border: 1px solid var(--line); padding: 0.1em 0.4em; font-size: 0.9em; color: var(--ink); }
+.prose-lite pre { background: var(--surface); border: 1px solid var(--line); padding: 1em; overflow-x: auto; }
+.prose-lite pre code { border: 0; padding: 0; background: none; }
+.prose-lite img { max-width: 100%; border: 1px solid var(--line); }
+.prose-lite hr { border-color: var(--line); }
