@@ -10,84 +10,64 @@ const Card = ({ label, value, live = false }) => (
   </div>
 );
 
-let leafletLoader;
-function loadLeaflet() {
-  if (window.L) return Promise.resolve(window.L);
-  if (leafletLoader) return leafletLoader;
-  leafletLoader = new Promise((resolve, reject) => {
-    if (!document.querySelector('link[data-leaflet="true"]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-      link.dataset.leaflet = "true";
-      document.head.appendChild(link);
-    }
+let geoChartLoader;
+function loadGeoChart() {
+  if (window.google?.visualization?.GeoChart) return Promise.resolve(window.google);
+  if (geoChartLoader) return geoChartLoader;
+  geoChartLoader = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-    script.onload = () => resolve(window.L);
-    script.onerror = () => reject(new Error("Could not load the map library."));
+    script.src = "https://www.gstatic.com/charts/loader.js";
+    script.onload = () => {
+      window.google.charts.load("current", { packages: ["geochart"] });
+      window.google.charts.setOnLoadCallback(() => resolve(window.google));
+    };
+    script.onerror = () => reject(new Error("Could not load the world map."));
     document.head.appendChild(script);
   });
-  return leafletLoader;
+  return geoChartLoader;
 }
 
-function drawLocations(L, layer, locations) {
-  layer.clearLayers();
-  locations.forEach((location) => {
-    if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) return;
-    const label = [location.city, location.region, location.country].filter(Boolean).join(", ") || "Unknown location";
-    const users = Number(location.users) || 1;
-    const size = Math.min(38, 28 + Math.ceil(Math.log2(users)) * 2);
-    const icon = L.divIcon({
-      className: "active-map-marker",
-      html: `<span>${users > 99 ? "99+" : users}</span>`,
-      iconSize: [size, size],
-      iconAnchor: [size / 2, size / 2],
-    });
-    L.marker([location.latitude, location.longitude], { icon }).bindTooltip(`${label} - ${users} active`).addTo(layer);
-  });
-}
-
-function LiveWorldMap({ countries = [], locations = [], total = 0 }) {
+function LiveWorldMap({ countries = [], total = 0 }) {
   const mapElement = useRef(null);
-  const mapInstance = useRef(null);
-  const markerLayer = useRef(null);
-  const latestLocations = useRef(locations);
+  const chart = useRef(null);
   const [mapError, setMapError] = useState("");
-  latestLocations.current = locations;
 
   useEffect(() => {
     let disposed = false;
-    loadLeaflet().then((L) => {
-      if (disposed || !mapElement.current || mapInstance.current) return;
-      const map = L.map(mapElement.current, { worldCopyJump: true }).setView([20, 0], 2);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-      markerLayer.current = L.layerGroup().addTo(map);
-      mapInstance.current = map;
-      drawLocations(L, markerLayer.current, latestLocations.current);
-      window.setTimeout(() => map.invalidateSize(), 0);
-    }).catch((error) => setMapError(error.message));
+    const draw = (google) => {
+      if (disposed || !mapElement.current) return;
+      const rows = countries
+        .filter((country) => /^[A-Z]{2}$/.test(country.countryCode || ""))
+        .map((country) => [country.countryCode, Number(country.users) || 0]);
+      const table = google.visualization.arrayToDataTable([["Country", "Active users"], ...rows]);
+      chart.current ||= new google.visualization.GeoChart(mapElement.current);
+      chart.current.draw(table, {
+        region: "world",
+        displayMode: "regions",
+        resolution: "countries",
+        colorAxis: { minValue: 0, colors: ["#252c25", "#d3f36b"] },
+        backgroundColor: "#090b0a",
+        datalessRegionColor: "#171c19",
+        defaultColor: "#252c25",
+        keepAspectRatio: true,
+        legend: { textStyle: { color: "#a7ada7" } },
+        tooltip: { textStyle: { color: "#11150a" } },
+      });
+    };
+    loadGeoChart().then(draw).catch((error) => setMapError(error.message));
+    const resize = () => window.google?.visualization?.GeoChart && draw(window.google);
+    window.addEventListener("resize", resize);
     return () => {
       disposed = true;
-      mapInstance.current?.remove();
-      mapInstance.current = null;
-      markerLayer.current = null;
+      window.removeEventListener("resize", resize);
+      chart.current = null;
     };
-  }, []);
-
-  useEffect(() => {
-    const L = window.L;
-    if (!L || !markerLayer.current) return;
-    drawLocations(L, markerLayer.current, locations);
-  }, [locations]);
+  }, [countries]);
 
   return (
     <section className="border border-line bg-surface p-5">
       <div className="mb-4 flex items-start justify-between gap-4">
-        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">Location estimated from IP - refreshed every 15 seconds</p></div>
+        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">Countries shaded by live visitor count - refreshed every 15 seconds</p></div>
         <span className="shrink-0 text-sm text-accent">{total} online</span>
       </div>
       {mapError ? <p className="grid h-72 place-items-center border border-line text-sm text-muted">{mapError}</p> : <div ref={mapElement} className="h-72 w-full border border-line bg-bg md:h-[28rem]" />}
@@ -139,7 +119,7 @@ export default function Overview() {
             <Card label="Unread messages" value={data.unreadMessages} />
           </div>
 
-          <LiveWorldMap countries={data.liveByCountry || []} locations={data.liveLocations || []} total={data.liveUsers || 0} />
+          <LiveWorldMap countries={data.liveByCountry || []} total={data.liveUsers || 0} />
 
           <div className="grid gap-6 lg:grid-cols-2">
             <section className=" border border-line bg-surface p-5">
