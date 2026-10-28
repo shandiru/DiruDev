@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import Admin from "../models/Admin.js";
 import Contact from "../models/Contact.js";
 import Event from "../models/Event.js";
+import LiveSession from "../models/LiveSession.js";
 import Post from "../models/Post.js";
 import Project from "../models/Project.js";
 import { requireAdmin, signToken } from "../middleware/auth.js";
@@ -42,7 +43,7 @@ router.get("/stats", async (req, res) => {
   const since = new Date(Date.now() - days * 86400_000);
   const match = { createdAt: { $gte: since } };
 
-  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts] = await Promise.all([
+  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers] = await Promise.all([
     Event.aggregate([
       { $match: match },
       { $group: { _id: null, events: { $sum: 1 }, visitors: { $addToSet: "$visitorId" } } },
@@ -69,6 +70,7 @@ router.get("/stats", async (req, res) => {
     ]),
     Contact.countDocuments({ read: false }),
     Post.countDocuments({ published: true }),
+    LiveSession.countDocuments({ lastSeen: { $gte: new Date(Date.now() - 60_000) } }),
   ]);
 
   res.json({
@@ -81,6 +83,7 @@ router.get("/stats", async (req, res) => {
     topClicks: topLabels,
     unreadMessages,
     publishedPosts: posts,
+    liveUsers,
   });
 });
 

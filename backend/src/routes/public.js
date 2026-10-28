@@ -3,6 +3,7 @@ import rateLimit from "express-rate-limit";
 import { z } from "zod";
 import Contact from "../models/Contact.js";
 import Event from "../models/Event.js";
+import LiveSession from "../models/LiveSession.js";
 import Post from "../models/Post.js";
 import Project from "../models/Project.js";
 import { clientInfo } from "../utils/clientInfo.js";
@@ -34,7 +35,17 @@ router.post("/events", eventLimiter, async (req, res) => {
   try {
     const info = clientInfo(req);
     if (info.device === "bot") return res.json({ ok: true });
-    await Event.create({ ...parsed.data, ...info });
+    const { sessionId, visitorId, path, type } = parsed.data;
+    if (sessionId && (type === "visit_start" || type === "heartbeat")) {
+      await LiveSession.findOneAndUpdate(
+        { sessionId },
+        { $set: { visitorId, path, country: info.country, device: info.device, lastSeen: new Date() } },
+        { upsert: true, setDefaultsOnInsert: true }
+      );
+    } else if (sessionId && type === "visit_end") {
+      await LiveSession.deleteOne({ sessionId });
+    }
+    if (type !== "heartbeat") await Event.create({ ...parsed.data, ...info });
   } catch (e) {
     console.error("event save failed:", e.message);
   }
