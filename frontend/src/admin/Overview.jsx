@@ -10,6 +10,56 @@ const Card = ({ label, value, live = false }) => (
   </div>
 );
 
+const countryCenters = {
+  US: [-98, 39], CA: [-106, 57], MX: [-102, 23], BR: [-52, -10], AR: [-64, -34], CL: [-71, -30], CO: [-74, 4],
+  GB: [-3, 55], IE: [-8, 53], FR: [2, 46], DE: [10, 51], ES: [-4, 40], IT: [12, 42], NL: [5, 52],
+  SE: [15, 62], NO: [10, 62], FI: [26, 64], PL: [19, 52], UA: [32, 49], RU: [90, 60], TR: [35, 39],
+  EG: [30, 27], ZA: [24, -29], NG: [8, 9], KE: [38, 0], MA: [-7, 32],
+  IN: [79, 22], LK: [80.7, 7.9], PK: [69, 30], BD: [90, 24], NP: [84, 28], CN: [104, 35], JP: [138, 37],
+  KR: [127, 36], TH: [101, 15], VN: [108, 16], MY: [102, 4], SG: [104, 1.3], ID: [117, -2], PH: [122, 12],
+  AU: [134, -25], NZ: [172, -41], SA: [45, 24], AE: [54, 24], IL: [35, 31],
+};
+
+function LiveWorldMap({ countries = [], total = 0 }) {
+  const markers = countries.map((item) => {
+    const center = countryCenters[item.countryCode];
+    return center ? { ...item, x: ((center[0] + 180) / 360) * 960, y: ((90 - center[1]) / 180) * 500 } : null;
+  }).filter(Boolean);
+
+  return (
+    <section className="border border-line bg-surface p-5">
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">Live sessions from the last 60 seconds</p></div>
+        <span className="shrink-0 text-sm text-accent">{total} online</span>
+      </div>
+      <div className="overflow-hidden border border-line bg-bg/60">
+        <svg viewBox="0 0 960 500" role="img" aria-label={`World map showing ${total} active visitors`} className="block h-auto w-full">
+          <defs><pattern id="map-grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="currentColor" strokeOpacity=".08" /></pattern></defs>
+          <rect width="960" height="500" fill="url(#map-grid)" />
+          <g fill="currentColor" fillOpacity=".16" stroke="currentColor" strokeOpacity=".2" strokeWidth="2">
+            <path d="M75 105 115 75 180 66 215 83 246 75 280 93 295 119 270 139 250 165 222 173 208 204 180 213 166 192 143 185 133 158 105 151 94 128Z" />
+            <path d="M236 215 267 223 290 252 283 286 268 317 259 354 239 388 225 357 220 323 206 292 212 261Z" />
+            <path d="M421 109 453 91 489 96 508 111 530 107 549 119 568 111 587 122 611 116 638 130 669 128 698 143 722 160 714 176 686 178 673 194 645 190 628 207 610 203 596 217 581 211 567 191 548 189 533 177 517 181 497 163 475 166 458 150 437 151 423 132Z" />
+            <path d="M470 191 506 186 536 205 547 237 537 269 521 302 505 337 487 355 473 326 465 291 449 259 451 227Z" />
+            <path d="M626 221 654 212 678 226 691 251 682 278 660 286 644 266Z" />
+            <path d="M716 314 752 301 790 309 817 329 807 350 778 356 752 346 730 334Z" />
+            <path d="M794 146 824 132 856 141 874 164 860 183 832 181 813 169Z" />
+            <path d="M856 350 878 341 895 355 889 377 870 381Z" />
+            <path d="M330 117 343 109 354 119 348 136 335 137Z" />
+          </g>
+          {markers.map((marker) => <g key={`${marker.countryCode}-${marker.country}`}>
+            <circle cx={marker.x} cy={marker.y} r="13" fill="var(--accent)" fillOpacity=".16"><title>{marker.country}: {marker.users} active</title></circle>
+            <circle cx={marker.x} cy={marker.y} r="5" fill="var(--accent)" stroke="var(--bg)" strokeWidth="2"><title>{marker.country}: {marker.users} active</title></circle>
+          </g>)}
+        </svg>
+      </div>
+      {countries.length > 0 ? <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        {countries.map((item) => <li key={`${item.countryCode}-${item.country}`} className="flex items-center gap-2 text-muted"><span className="h-2 w-2 rounded-full bg-accent" />{item.country}: <span className="text-ink">{item.users}</span></li>)}
+      </ul> : <p className="mt-3 text-sm text-muted">No active visitors right now.</p>}
+    </section>
+  );
+}
+
 export default function Overview() {
   const [days, setDays] = useState(30);
   const { data, error, loading, reload } = useLoad(() => adminApi.get(`/stats?days=${days}`), [days]);
@@ -50,6 +100,8 @@ export default function Overview() {
             <Card label="Contact forms" value={count("contact_submit")} />
             <Card label="Unread messages" value={data.unreadMessages} />
           </div>
+
+          <LiveWorldMap countries={data.liveByCountry || []} total={data.liveUsers || 0} />
 
           <div className="grid gap-6 lg:grid-cols-2">
             <section className=" border border-line bg-surface p-5">

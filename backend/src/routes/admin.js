@@ -43,7 +43,8 @@ router.get("/stats", async (req, res) => {
   const since = new Date(Date.now() - days * 86400_000);
   const match = { createdAt: { $gte: since } };
 
-  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers] = await Promise.all([
+  const liveSince = new Date(Date.now() - 60_000);
+  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers, liveByCountry] = await Promise.all([
     Event.aggregate([
       { $match: match },
       { $group: { _id: null, events: { $sum: 1 }, visitors: { $addToSet: "$visitorId" } } },
@@ -70,7 +71,13 @@ router.get("/stats", async (req, res) => {
     ]),
     Contact.countDocuments({ read: false }),
     Post.countDocuments({ published: true }),
-    LiveSession.countDocuments({ lastSeen: { $gte: new Date(Date.now() - 60_000) } }),
+    LiveSession.countDocuments({ lastSeen: { $gte: liveSince } }),
+    LiveSession.aggregate([
+      { $match: { lastSeen: { $gte: liveSince } } },
+      { $group: { _id: { country: "$country", countryCode: "$countryCode" }, users: { $sum: 1 } } },
+      { $project: { _id: 0, country: "$_id.country", countryCode: "$_id.countryCode", users: 1 } },
+      { $sort: { users: -1 } },
+    ]),
   ]);
 
   res.json({
@@ -84,6 +91,7 @@ router.get("/stats", async (req, res) => {
     unreadMessages,
     publishedPosts: posts,
     liveUsers,
+    liveByCountry,
   });
 });
 

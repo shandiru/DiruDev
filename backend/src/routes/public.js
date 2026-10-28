@@ -39,7 +39,7 @@ router.post("/events", eventLimiter, async (req, res) => {
     if (sessionId && (type === "visit_start" || type === "heartbeat")) {
       await LiveSession.findOneAndUpdate(
         { sessionId },
-        { $set: { visitorId, path, country: info.country, device: info.device, lastSeen: new Date() } },
+        { $set: { visitorId, path, country: info.country, countryCode: info.countryCode, device: info.device, lastSeen: new Date() } },
         { upsert: true, setDefaultsOnInsert: true }
       );
     } else if (sessionId && type === "visit_end") {
