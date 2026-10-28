@@ -14,6 +14,14 @@ export function getGeo(req, ip) {
   // Hosting platforms (Cloudflare / Vercel) already send the country, prefer it.
   const hdr = req.headers["cf-ipcountry"] || req.headers["x-vercel-ip-country"];
   const g = geoip.lookup(ip) || {};
+  const headerValue = (...keys) => keys.map((key) => req.headers[key]).find((value) => value != null && value !== "") || "";
+  const headerNumber = (...keys) => {
+    const value = Number(headerValue(...keys));
+    return Number.isFinite(value) ? value : null;
+  };
+  const cityHeader = headerValue("cf-ipcity", "x-vercel-ip-city");
+  let headerCity = cityHeader;
+  try { headerCity = decodeURIComponent(cityHeader); } catch { /* use the raw header */ }
   const code = (hdr && hdr !== "XX" ? String(hdr) : g.country) || "";
   let country = "Unknown";
   try {
@@ -22,7 +30,14 @@ export function getGeo(req, ip) {
     country = code || "Unknown";
   }
   if (!code && /^(127\.|10\.|192\.168\.)/.test(ip)) country = "Local (dev)";
-  return { country, countryCode: code, region: g.region || "", city: g.city || "" };
+  return {
+    country,
+    countryCode: code,
+    region: headerValue("cf-region", "x-vercel-ip-country-region") || g.region || "",
+    city: headerCity || g.city || "",
+    latitude: headerNumber("cf-iplatitude", "x-vercel-ip-latitude") ?? (Number.isFinite(g.ll?.[0]) ? g.ll[0] : null),
+    longitude: headerNumber("cf-iplongitude", "x-vercel-ip-longitude") ?? (Number.isFinite(g.ll?.[1]) ? g.ll[1] : null),
+  };
 }
 
 export function getDevice(ua = "") {

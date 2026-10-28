@@ -6,6 +6,10 @@ const liveSessionSchema = new mongoose.Schema({
   path: { type: String, maxlength: 300, default: "/" },
   country: { type: String, default: "Unknown" },
   countryCode: { type: String, default: "" },
+  city: { type: String, default: "" },
+  region: { type: String, default: "" },
+  latitude: { type: Number, default: null },
+  longitude: { type: Number, default: null },
   device: { type: String, default: "desktop" },
   lastSeen: { type: Date, required: true, expires: 120 },
 });
