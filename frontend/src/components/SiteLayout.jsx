@@ -63,13 +63,17 @@ function useTracking() {
       visitStartedAt.current = Date.now();
       track("visit_start", "Site visit started");
     }
+    const heartbeat = window.setInterval(() => track("heartbeat"), 20_000);
     const onPageHide = () => {
       track("visit_end", "Site visit ended", {
         durationSeconds: Math.max(0, Math.round((Date.now() - visitStartedAt.current) / 1000)),
       });
     };
     window.addEventListener("pagehide", onPageHide);
-    return () => window.removeEventListener("pagehide", onPageHide);
+    return () => {
+      window.clearInterval(heartbeat);
+      window.removeEventListener("pagehide", onPageHide);
+    };
   }, []);
 
   useEffect(() => {

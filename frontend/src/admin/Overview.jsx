@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { adminApi } from "../lib/api.js";
 import { useLoad } from "./hooks.js";
 import { field } from "../ui.jsx";
 
-const Card = ({ label, value }) => (
+const Card = ({ label, value, live = false }) => (
   <div className=" border border-line bg-surface p-5">
-    <p className="text-sm text-muted">{label}</p>
+    <p className="flex items-center gap-2 text-sm text-muted">{live && <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />} {label}</p>
     <p className="mt-1 text-3xl font-bold tracking-tight">{value}</p>
   </div>
 );
 
 export default function Overview() {
   const [days, setDays] = useState(30);
-  const { data, error, loading } = useLoad(() => adminApi.get(`/stats?days=${days}`), [days]);
+  const { data, error, loading, reload } = useLoad(() => adminApi.get(`/stats?days=${days}`), [days]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "visible") reload();
+    }, 15_000);
+    return () => window.clearInterval(timer);
+  }, [reload]);
 
   const maxCountry = Math.max(1, ...(data?.byCountry || []).map((c) => c.events));
   const maxDay = Math.max(1, ...(data?.perDay || []).map((d) => d.events));
@@ -36,6 +43,7 @@ export default function Overview() {
         <>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
             <Card label="Unique visitors" value={data.uniqueVisitors} />
+            <Card label="Active visitors now" value={data.liveUsers ?? 0} live />
             <Card label="Site visits" value={count("visit_start")} />
             <Card label="Site exits" value={count("visit_end")} />
             <Card label="Page views" value={count("page_view")} />
