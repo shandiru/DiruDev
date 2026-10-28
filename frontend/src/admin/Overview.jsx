@@ -27,7 +27,7 @@ function loadGeoChart() {
   return geoChartLoader;
 }
 
-function LiveWorldMap({ countries = [], total = 0 }) {
+function LiveWorldMap({ countries = [], locations = [], total = 0 }) {
   const mapElement = useRef(null);
   const chart = useRef(null);
   const [mapError, setMapError] = useState("");
@@ -36,22 +36,30 @@ function LiveWorldMap({ countries = [], total = 0 }) {
     let disposed = false;
     const draw = (google) => {
       if (disposed || !mapElement.current) return;
-      const rows = countries
-        .filter((country) => /^[A-Z]{2}$/.test(country.countryCode || ""))
-        .map((country) => [country.countryCode, Number(country.users) || 0]);
-      const table = google.visualization.arrayToDataTable([["Country", "Active users"], ...rows]);
+      const table = new google.visualization.DataTable();
+      table.addColumn("number", "Latitude");
+      table.addColumn("number", "Longitude");
+      table.addColumn("number", "Active users");
+      table.addColumn({ type: "string", role: "tooltip" });
+      const rows = locations
+        .filter((location) => Number.isFinite(location.latitude) && Number.isFinite(location.longitude))
+        .map((location) => {
+          const label = [location.city, location.region, location.country].filter(Boolean).join(", ") || "Location unavailable";
+          return [Number(location.latitude), Number(location.longitude), Number(location.users) || 1, `${label} - ${location.users} active`];
+        });
+      table.addRows(rows);
       chart.current ||= new google.visualization.GeoChart(mapElement.current);
       chart.current.draw(table, {
         region: "world",
-        displayMode: "regions",
-        resolution: "countries",
-        colorAxis: { minValue: 0, colors: ["#252c25", "#d3f36b"] },
+        displayMode: "markers",
+        colorAxis: { colors: ["#d3f36b", "#d3f36b"] },
+        sizeAxis: { minValue: 1, maxValue: Math.max(1, ...locations.map((location) => Number(location.users) || 1)), minSize: 5, maxSize: 18 },
+        markerOpacity: 0.85,
         backgroundColor: "#090b0a",
         datalessRegionColor: "#171c19",
         defaultColor: "#252c25",
         keepAspectRatio: true,
-        legend: { textStyle: { color: "#a7ada7" } },
-        tooltip: { textStyle: { color: "#11150a" } },
+        legend: "none",
       });
     };
     loadGeoChart().then(draw).catch((error) => setMapError(error.message));
@@ -62,15 +70,22 @@ function LiveWorldMap({ countries = [], total = 0 }) {
       window.removeEventListener("resize", resize);
       chart.current = null;
     };
-  }, [countries]);
+  }, [countries, locations]);
 
   return (
     <section className="border border-line bg-surface p-5">
       <div className="mb-4 flex items-start justify-between gap-4">
-        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">Countries shaded by live visitor count - refreshed every 15 seconds</p></div>
+        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">City-level locations estimated from IP - refreshed every 15 seconds</p></div>
         <span className="shrink-0 text-sm text-accent">{total} online</span>
       </div>
       {mapError ? <p className="grid h-72 place-items-center border border-line text-sm text-muted">{mapError}</p> : <div ref={mapElement} className="h-72 w-full border border-line bg-bg md:h-[28rem]" />}
+      {locations.length > 0 && <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
+        {locations.map((location) => <li key={`${location.city}-${location.region}-${location.country}-${location.latitude}-${location.longitude}`} className="flex items-start justify-between gap-3 border-b border-line pb-2">
+          <span className="min-w-0 text-muted">{[location.city, location.region, location.country].filter(Boolean).join(", ") || "Location unavailable"}</span>
+          <span className="shrink-0 text-ink">{location.users}</span>
+        </li>)}
+      </ul>}
+      {locations.length === 0 && <p className="mt-3 text-sm text-muted">No active visitor locations with coordinates yet.</p>}
       {countries.length > 0 ? <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         {countries.map((item) => <li key={`${item.countryCode}-${item.country}`} className="flex items-center gap-2 text-muted"><span className="h-2 w-2 rounded-full bg-accent" />{item.country}: <span className="text-ink">{item.users}</span></li>)}
       </ul> : <p className="mt-3 text-sm text-muted">No active visitors right now.</p>}
@@ -119,7 +134,7 @@ export default function Overview() {
             <Card label="Unread messages" value={data.unreadMessages} />
           </div>
 
-          <LiveWorldMap countries={data.liveByCountry || []} total={data.liveUsers || 0} />
+          <LiveWorldMap countries={data.liveByCountry || []} locations={data.liveLocations || []} total={data.liveUsers || 0} />
 
           <div className="grid gap-6 lg:grid-cols-2">
             <section className=" border border-line bg-surface p-5">

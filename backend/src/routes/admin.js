@@ -44,7 +44,7 @@ router.get("/stats", async (req, res) => {
   const match = { createdAt: { $gte: since } };
 
   const liveSince = new Date(Date.now() - 60_000);
-  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers, liveByCountry] = await Promise.all([
+  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers, liveByCountry, liveLocations] = await Promise.all([
     Event.aggregate([
       { $match: match },
       { $group: { _id: null, events: { $sum: 1 }, visitors: { $addToSet: "$visitorId" } } },
@@ -78,6 +78,23 @@ router.get("/stats", async (req, res) => {
       { $project: { _id: 0, country: "$_id.country", countryCode: "$_id.countryCode", users: 1 } },
       { $sort: { users: -1 } },
     ]),
+    LiveSession.aggregate([
+      { $match: { lastSeen: { $gte: liveSince }, latitude: { $ne: null }, longitude: { $ne: null } } },
+      { $group: {
+        _id: { city: "$city", region: "$region", country: "$country", latitude: "$latitude", longitude: "$longitude" },
+        users: { $sum: 1 },
+      } },
+      { $project: {
+        _id: 0,
+        city: "$_id.city",
+        region: "$_id.region",
+        country: "$_id.country",
+        latitude: "$_id.latitude",
+        longitude: "$_id.longitude",
+        users: 1,
+      } },
+      { $sort: { users: -1 } },
+    ]),
   ]);
 
   res.json({
@@ -92,6 +109,7 @@ router.get("/stats", async (req, res) => {
     publishedPosts: posts,
     liveUsers,
     liveByCountry,
+    liveLocations,
   });
 });
 
