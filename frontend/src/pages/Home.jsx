@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
 import {
   siLaravel,
   siReact,
@@ -19,8 +16,6 @@ import { wrap, btnPrimary, btnQuiet, Reveal, Section, fmtDate } from "../ui.jsx"
 import { api } from "../lib/api.js";
 import ContactForm from "../components/ContactForm.jsx";
 
-gsap.registerPlugin(useGSAP);
-
 const tools = [
   ["Laravel", siLaravel],
   ["React", siReact],
@@ -34,28 +29,8 @@ const tools = [
 ];
 
 function Hero() {
-  const heroRef = useRef(null);
-
-  useGSAP(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    gsap.timeline({ defaults: { duration: 0.48, ease: "power3.out" } })
-      .from("[data-hero-kicker]", { autoAlpha: 0, y: 10 })
-      .from("[data-hero-word]", {
-        autoAlpha: 0,
-        y: 26,
-        rotationX: -24,
-        transformPerspective: 700,
-        transformOrigin: "50% 100%",
-        stagger: 0.065,
-        duration: 0.72,
-      }, "-=0.18")
-      .from("[data-hero-copy]", { autoAlpha: 0, y: 10 }, "-=0.42")
-      .from("[data-hero-action]", { autoAlpha: 0, y: 8, stagger: 0.07 }, "-=0.3")
-      .from("[data-hero-aside]", { autoAlpha: 0, x: 12, stagger: 0.09 }, "-=0.32");
-  }, { scope: heroRef });
-
   return (
-    <section ref={heroRef} id="top" className={`${wrap} grid gap-10 pb-16 pt-20 md:grid-cols-[1.35fr_0.65fr] md:items-end md:gap-16 md:pb-24 md:pt-32`}>
+    <section id="top" className={`${wrap} grid gap-10 pb-16 pt-20 md:grid-cols-[1.35fr_0.65fr] md:items-end md:gap-16 md:pb-24 md:pt-32`}>
       <div>
         <p data-hero-kicker className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-accent">Sri Lanka</p>
         <h1 aria-label="I build websites and apps that scale." className="max-w-[18ch] text-[clamp(2.8rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.055em]">
@@ -90,43 +65,12 @@ function Hero() {
 }
 
 function TechStack() {
-  const toolsRef = useRef(null);
-  const trackRef = useRef(null);
-
-  useGSAP((_, contextSafe) => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const marquee = gsap.to(trackRef.current, {
-      xPercent: -50,
-      duration: 72,
-      ease: "none",
-      repeat: -1,
-    });
-
-    const viewport = toolsRef.current?.querySelector(".tech-viewport");
-    if (!viewport) return;
-    const pause = contextSafe(() => marquee.pause());
-    const resume = contextSafe(() => marquee.play());
-    const onFocusOut = (event) => {
-      if (!viewport.contains(event.relatedTarget)) resume();
-    };
-    viewport.addEventListener("pointerenter", pause);
-    viewport.addEventListener("pointerleave", resume);
-    viewport.addEventListener("focusin", pause);
-    viewport.addEventListener("focusout", onFocusOut);
-    return () => {
-      viewport.removeEventListener("pointerenter", pause);
-      viewport.removeEventListener("pointerleave", resume);
-      viewport.removeEventListener("focusin", pause);
-      viewport.removeEventListener("focusout", onFocusOut);
-    };
-  }, { scope: toolsRef });
-
   return (
-    <section ref={toolsRef} aria-label="Technologies and services" className="border-y border-line py-7 md:py-9">
+    <section aria-label="Technologies and services" className="border-y border-line py-7 md:py-9">
       <div className={wrap}>
         <p className="mb-7 text-sm font-semibold uppercase tracking-[0.16em] text-muted">Tools I work with</p>
         <div className="tech-viewport">
-          <div ref={trackRef} className="tech-track flex w-max">
+          <div className="tech-track flex w-max">
             {[false, true].map((duplicate) => (
               <div key={String(duplicate)} aria-hidden={duplicate || undefined} className="tech-group flex shrink-0 items-center gap-12 pr-12 md:gap-16 md:pr-16">
                 {tools.map(([name, icon]) => (

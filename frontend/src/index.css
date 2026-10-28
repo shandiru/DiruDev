@@ -77,7 +77,12 @@
 .project-panel:hover { border-color: var(--accent); }
 .project-badge { background: var(--accent); color: var(--on-accent); }
 .tech-viewport { overflow: hidden; }
-.tech-track { will-change: transform; }
+.tech-track { animation: tech-marquee 72s linear infinite; will-change: transform; }
+.tech-viewport:hover .tech-track,
+.tech-viewport:focus-within .tech-track { animation-play-state: paused; }
+@keyframes tech-marquee {
+  to { transform: translateX(-50%); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -85,7 +90,7 @@
   }
   body::before { animation: none; }
   .tech-viewport { overflow-x: auto; }
-  .tech-track { transform: none !important; }
+  .tech-track { animation: none; transform: none !important; }
   .tech-group[aria-hidden="true"] { display: none; }
 }
 
