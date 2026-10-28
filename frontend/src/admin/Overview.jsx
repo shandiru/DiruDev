@@ -34,8 +34,10 @@ export default function Overview() {
 
       {data && (
         <>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
             <Card label="Unique visitors" value={data.uniqueVisitors} />
+            <Card label="Site visits" value={count("visit_start")} />
+            <Card label="Site exits" value={count("visit_end")} />
             <Card label="Page views" value={count("page_view")} />
             <Card label="Contact forms" value={count("contact_submit")} />
             <Card label="Unread messages" value={data.unreadMessages} />

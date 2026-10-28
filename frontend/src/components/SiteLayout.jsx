@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { profile } from "../data.js";
 import { wrap, btnPrimary } from "../ui.jsx";
@@ -56,6 +56,21 @@ function Header() {
 /* Page views, clicks and section views are all recorded from here. */
 function useTracking() {
   const { pathname } = useLocation();
+  const visitStartedAt = useRef(0);
+
+  useEffect(() => {
+    if (!visitStartedAt.current) {
+      visitStartedAt.current = Date.now();
+      track("visit_start", "Site visit started");
+    }
+    const onPageHide = () => {
+      track("visit_end", "Site visit ended", {
+        durationSeconds: Math.max(0, Math.round((Date.now() - visitStartedAt.current) / 1000)),
+      });
+    };
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, []);
 
   useEffect(() => {
     track("page_view", pathname);

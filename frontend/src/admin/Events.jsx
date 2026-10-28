@@ -3,7 +3,7 @@ import { adminApi } from "../lib/api.js";
 import { useLoad, when } from "./hooks.js";
 import { btnQuiet, field } from "../ui.jsx";
 
-const types = ["", "page_view", "click", "section_view", "blog_view", "contact_submit", "contact_form_success"];
+const types = ["", "visit_start", "visit_end", "page_view", "click", "section_view", "blog_view", "contact_submit", "contact_form_success"];
 
 export default function Events() {
   const [type, setType] = useState("");
