@@ -10,72 +10,89 @@ const Card = ({ label, value, live = false }) => (
   </div>
 );
 
-let geoChartLoader;
-function loadGeoChart() {
-  if (window.google?.visualization?.GeoChart) return Promise.resolve(window.google);
-  if (geoChartLoader) return geoChartLoader;
-  geoChartLoader = new Promise((resolve, reject) => {
+let leafletLoader;
+function loadLeaflet() {
+  if (window.L) return Promise.resolve(window.L);
+  if (leafletLoader) return leafletLoader;
+  leafletLoader = new Promise((resolve, reject) => {
+    if (!document.querySelector('link[data-leaflet="true"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      link.dataset.leaflet = "true";
+      document.head.appendChild(link);
+    }
     const script = document.createElement("script");
-    script.src = "https://www.gstatic.com/charts/loader.js";
-    script.onload = () => {
-      window.google.charts.load("current", { packages: ["geochart"] });
-      window.google.charts.setOnLoadCallback(() => resolve(window.google));
-    };
-    script.onerror = () => reject(new Error("Could not load the world map."));
+    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.onload = () => resolve(window.L);
+    script.onerror = () => reject(new Error("Could not load the interactive world map."));
     document.head.appendChild(script);
   });
-  return geoChartLoader;
+  return leafletLoader;
+}
+
+function updateLocationMarkers(L, layer, locations) {
+  layer.clearLayers();
+  locations.forEach((location) => {
+    const latitude = Number(location.latitude);
+    const longitude = Number(location.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+    const users = Number(location.users) || 1;
+    const label = [location.city, location.region, location.country].filter(Boolean).join(", ") || "Location unavailable";
+    const marker = L.circleMarker([latitude, longitude], {
+      radius: Math.min(14, 6 + Math.log2(users)),
+      color: "#11150a",
+      weight: 2,
+      fillColor: "#d3f36b",
+      fillOpacity: 0.9,
+    }).addTo(layer);
+    const tooltip = document.createElement("span");
+    tooltip.textContent = `${label} - ${users} active`;
+    marker.bindTooltip(tooltip);
+    const popup = document.createElement("div");
+    popup.textContent = `${label} - ${users} active visitors`;
+    marker.bindPopup(popup);
+  });
 }
 
 function LiveWorldMap({ countries = [], locations = [], total = 0 }) {
   const mapElement = useRef(null);
-  const chart = useRef(null);
+  const map = useRef(null);
+  const markerLayer = useRef(null);
+  const latestLocations = useRef(locations);
   const [mapError, setMapError] = useState("");
+  latestLocations.current = locations;
 
   useEffect(() => {
     let disposed = false;
-    const draw = (google) => {
+    loadLeaflet().then((L) => {
       if (disposed || !mapElement.current) return;
-      const table = new google.visualization.DataTable();
-      table.addColumn("number", "Latitude");
-      table.addColumn("number", "Longitude");
-      table.addColumn("number", "Active users");
-      table.addColumn({ type: "string", role: "tooltip" });
-      const rows = locations
-        .filter((location) => Number.isFinite(location.latitude) && Number.isFinite(location.longitude))
-        .map((location) => {
-          const label = [location.city, location.region, location.country].filter(Boolean).join(", ") || "Location unavailable";
-          return [Number(location.latitude), Number(location.longitude), Number(location.users) || 1, `${label} - ${location.users} active`];
-        });
-      table.addRows(rows);
-      chart.current ||= new google.visualization.GeoChart(mapElement.current);
-      chart.current.draw(table, {
-        region: "world",
-        displayMode: "markers",
-        colorAxis: { colors: ["#d3f36b", "#d3f36b"] },
-        sizeAxis: { minValue: 1, maxValue: Math.max(1, ...locations.map((location) => Number(location.users) || 1)), minSize: 5, maxSize: 18 },
-        markerOpacity: 0.85,
-        backgroundColor: "#090b0a",
-        datalessRegionColor: "#171c19",
-        defaultColor: "#252c25",
-        keepAspectRatio: true,
-        legend: "none",
-      });
-    };
-    loadGeoChart().then(draw).catch((error) => setMapError(error.message));
-    const resize = () => window.google?.visualization?.GeoChart && draw(window.google);
-    window.addEventListener("resize", resize);
+      const instance = L.map(mapElement.current, { worldCopyJump: true, scrollWheelZoom: true }).setView([20, 0], 2);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(instance);
+      markerLayer.current = L.layerGroup().addTo(instance);
+      map.current = instance;
+      updateLocationMarkers(L, markerLayer.current, latestLocations.current);
+      window.setTimeout(() => instance.invalidateSize(), 0);
+    }).catch((error) => setMapError(error.message));
     return () => {
       disposed = true;
-      window.removeEventListener("resize", resize);
-      chart.current = null;
+      map.current?.remove();
+      map.current = null;
+      markerLayer.current = null;
     };
-  }, [countries, locations]);
+  }, []);
+
+  useEffect(() => {
+    if (window.L && markerLayer.current) updateLocationMarkers(window.L, markerLayer.current, locations);
+  }, [locations]);
 
   return (
     <section className="border border-line bg-surface p-5">
       <div className="mb-4 flex items-start justify-between gap-4">
-        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">City-level locations estimated from IP - refreshed every 15 seconds</p></div>
+        <div><h2 className="font-semibold">Active visitors around the world</h2><p className="text-sm text-muted">Zoom with the buttons, mouse wheel, or pinch. Locations are estimated from IP.</p></div>
         <span className="shrink-0 text-sm text-accent">{total} online</span>
       </div>
       {mapError ? <p className="grid h-72 place-items-center border border-line text-sm text-muted">{mapError}</p> : <div ref={mapElement} className="h-72 w-full border border-line bg-bg md:h-[28rem]" />}
