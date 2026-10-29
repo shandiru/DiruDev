@@ -18,7 +18,7 @@ export default function Posts() {
 
   return (
     <div className="grid gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <h1 className="text-2xl font-bold tracking-tight">Blog posts</h1>
         <Link to="/admin/posts/new" className={`${btnPrimary} !py-2 text-sm`}>New post</Link>
       </div>
@@ -34,10 +34,10 @@ export default function Posts() {
                 {p.published ? `Published ${fmtDate(p.publishedAt)}` : "Draft"} · {p.views} views · /blog/{p.slug}
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex w-full flex-wrap gap-2 sm:w-auto">
               {p.published && <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer" className={`${btnQuiet} !py-1.5 text-sm`}>View</a>}
               <Link to={`/admin/posts/${p._id}`} className={`${btnQuiet} !py-1.5 text-sm`}>Edit</Link>
-              <button onClick={() => remove(p)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-red-400`}>Delete</button>
+              <button type="button" onClick={() => remove(p)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-red-400`}>Delete</button>
             </div>
           </li>
         ))}

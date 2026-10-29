@@ -36,7 +36,7 @@ export default function Messages() {
       <ul className="grid gap-3">
         {data?.map((c) => (
           <li key={c._id} className=" border border-line bg-surface">
-            <button onClick={() => toggle(c)} className="flex w-full cursor-pointer items-start justify-between gap-4 p-4 text-left">
+            <button type="button" onClick={() => toggle(c)} className="flex w-full cursor-pointer items-start justify-between gap-4 p-4 text-left">
               <div className="min-w-0">
                 <p className="flex items-center gap-2 font-semibold">
                   {!c.read && <span className="h-2 w-2  bg-accent" aria-label="Unread" />}
@@ -58,8 +58,8 @@ export default function Messages() {
                 </dl>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <a className={`${btnQuiet} !py-1.5 text-sm`} href={`mailto:${c.email}?subject=Re: ${encodeURIComponent(c.subject || "your message")}`}>Reply by email</a>
-                  <button onClick={() => toggleRead(c, !c.read)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm`}>Mark as {c.read ? "unread" : "read"}</button>
-                  <button onClick={() => remove(c)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-red-400`}>Delete</button>
+                  <button type="button" onClick={() => toggleRead(c, !c.read)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm`}>Mark as {c.read ? "unread" : "read"}</button>
+                  <button type="button" onClick={() => remove(c)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-red-400`}>Delete</button>
                 </div>
               </div>
             )}

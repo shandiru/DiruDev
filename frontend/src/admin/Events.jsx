@@ -28,7 +28,7 @@ export default function Events() {
     <div className="grid gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold tracking-tight">Events {data && <span className="text-base font-normal text-muted">({data.total})</span>}</h1>
-        <button onClick={reload} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm`}>Refresh</button>
+        <button type="button" onClick={reload} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm`}>Refresh</button>
       </div>
 
       <div className="flex flex-wrap gap-3">
@@ -68,9 +68,9 @@ export default function Events() {
 
       {data && data.pages > 1 && (
         <div className="flex items-center gap-3 text-sm">
-          <button disabled={page <= 1} onClick={() => setPage(page - 1)} className={`${btnQuiet} cursor-pointer !py-1.5 disabled:opacity-40`}>Previous</button>
+          <button type="button" disabled={page <= 1} onClick={() => setPage(page - 1)} className={`${btnQuiet} cursor-pointer !py-1.5 disabled:opacity-40`}>Previous</button>
           <span className="text-muted">Page {data.page} of {data.pages}</span>
-          <button disabled={page >= data.pages} onClick={() => setPage(page + 1)} className={`${btnQuiet} cursor-pointer !py-1.5 disabled:opacity-40`}>Next</button>
+          <button type="button" disabled={page >= data.pages} onClick={() => setPage(page + 1)} className={`${btnQuiet} cursor-pointer !py-1.5 disabled:opacity-40`}>Next</button>
         </div>
       )}
     </div>

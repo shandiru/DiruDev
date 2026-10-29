@@ -58,7 +58,7 @@ export default function AdminLayout() {
           </nav>
           <div className={`${menuOpen ? "flex" : "hidden"} w-full items-center justify-between gap-4 border-t border-line pt-3 text-sm md:flex md:w-auto md:border-0 md:pt-0`}>
             <a href="/" className="text-muted hover:text-ink" target="_blank" rel="noreferrer">View site</a>
-            <button
+            <button type="button"
               className="cursor-pointer text-muted hover:text-ink"
               onClick={() => {
                 setToken(null);

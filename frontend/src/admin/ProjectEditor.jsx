@@ -70,7 +70,7 @@ export default function ProjectEditor() {
       </div>
       {error && <p role="alert" className="text-red-400">{error}</p>}
       <div className="flex gap-3">
-        <button className={`${btnPrimary} cursor-pointer`} disabled={busy}>{busy ? "Saving..." : "Save project"}</button>
+        <button type="submit" className={`${btnPrimary} cursor-pointer`} disabled={busy}>{busy ? "Saving..." : "Save project"}</button>
         <Link to="/admin/projects" className={btnQuiet}>Cancel</Link>
       </div>
     </form>
