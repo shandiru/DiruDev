@@ -44,7 +44,7 @@ router.get("/stats", async (req, res) => {
   const match = { createdAt: { $gte: since } };
 
   const liveSince = new Date(Date.now() - 60_000);
-  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers, liveByCountry, liveLocations] = await Promise.all([
+  const [totals, byCountry, byType, perDay, topLabels, unreadMessages, posts, liveUsers, liveByCountry, bySource, liveLocations] = await Promise.all([
     Event.aggregate([
       { $match: match },
       { $group: { _id: null, events: { $sum: 1 }, visitors: { $addToSet: "$visitorId" } } },
@@ -78,6 +78,12 @@ router.get("/stats", async (req, res) => {
       { $project: { _id: 0, country: "$_id.country", countryCode: "$_id.countryCode", users: 1 } },
       { $sort: { users: -1 } },
     ]),
+    Event.aggregate([
+      { $match: { ...match, type: "visit_start" } },
+      { $group: { _id: { $ifNull: ["$meta.attribution.source", "Unattributed"] }, visits: { $sum: 1 }, visitors: { $addToSet: "$visitorId" } } },
+      { $project: { _id: 0, source: "$_id", visits: 1, visitors: { $size: "$visitors" } } },
+      { $sort: { visits: -1 } },
+    ]),
     LiveSession.aggregate([
       { $match: { lastSeen: { $gte: liveSince }, latitude: { $ne: null }, longitude: { $ne: null } } },
       { $group: {
@@ -102,6 +108,7 @@ router.get("/stats", async (req, res) => {
     totalEvents: totals[0]?.events || 0,
     uniqueVisitors: totals[0]?.visitors || 0,
     byCountry,
+    bySource,
     byType,
     perDay,
     topClicks: topLabels,

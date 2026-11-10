@@ -155,6 +155,22 @@ export default function Overview() {
 
           <div className="grid gap-6 lg:grid-cols-2">
             <section className=" border border-line bg-surface p-5">
+              <h2 className="mb-1 font-semibold">Traffic sources</h2>
+              <p className="mb-4 text-sm text-muted">Where visitors came from · visits in the selected period</p>
+              {(data.bySource || []).length === 0 ? <p className="text-sm text-muted">No visit source data yet. New visits will appear here.</p> : (
+                <ul className="grid gap-3">
+                  {data.bySource.map((item) => (
+                    <li key={item.source} className="flex items-center justify-between gap-3 border-b border-line pb-2 last:border-0">
+                      <span>{item.source}</span>
+                      <span className="text-sm text-muted">{item.visitors} visitors · {item.visits} visits</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p className="mt-4 text-xs text-muted">Campaign links: add <code>?utm_source=youtube&amp;utm_medium=social&amp;utm_campaign=launch</code> to a link to track a specific post or campaign.</p>
+            </section>
+
+            <section className=" border border-line bg-surface p-5">
               <h2 className="mb-4 font-semibold">Visitors by country</h2>
               {data.byCountry.length === 0 && <p className="text-sm text-muted">No data yet.</p>}
               <ul className="grid gap-3">
