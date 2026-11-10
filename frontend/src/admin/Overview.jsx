@@ -161,7 +161,7 @@ export default function Overview() {
                 <ul className="grid gap-3">
                   {data.bySource.map((item) => (
                     <li key={item.source} className="flex items-center justify-between gap-3 border-b border-line pb-2 last:border-0">
-                      <span>{item.source}</span>
+                      <span className="min-w-0"><span>{item.source}</span><span className="ml-2 text-xs text-muted">{item.medium}</span>{item.campaign && <span className="block text-xs text-muted">Campaign: {item.campaign}</span>}</span>
                       <span className="text-sm text-muted">{item.visitors} visitors · {item.visits} visits</span>
                     </li>
                   ))}

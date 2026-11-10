@@ -46,7 +46,7 @@ export default function Events() {
         <div className="overflow-x-auto  border border-line">
           <table className="w-full min-w-[820px] text-left text-sm">
             <thead className="bg-surface text-muted">
-              <tr>{["When", "Action", "Detail", "Page", "IP", "Location", "Device"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr>
+              <tr>{["When", "Action", "Detail", "Traffic source", "Page", "IP", "Location", "Device"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr>
             </thead>
             <tbody>
               {data.items.map((e) => (
@@ -54,13 +54,14 @@ export default function Events() {
                   <td className="whitespace-nowrap px-3 py-2 text-muted">{when(e.createdAt)}</td>
                   <td className="px-3 py-2 font-medium">{e.type}</td>
                   <td className="max-w-[240px] truncate px-3 py-2" title={e.label}>{e.label}</td>
+                  <td className="px-3 py-2 text-muted">{e.meta?.attribution?.source || (e.type === "click" && e.label === "GitHub" ? "GitHub link click" : "—")}{e.meta?.attribution?.campaign ? <span className="block text-xs">{e.meta.attribution.campaign}</span> : null}</td>
                   <td className="px-3 py-2 text-muted">{e.path}</td>
                   <td className="whitespace-nowrap px-3 py-2">{e.ip}</td>
                   <td className="px-3 py-2">{e.country}{e.city ? `, ${e.city}` : ""}</td>
                   <td className="px-3 py-2 text-muted">{e.device}</td>
                 </tr>
               ))}
-              {data.items.length === 0 && <tr><td colSpan={7} className="px-3 py-8 text-center text-muted">No events found.</td></tr>}
+              {data.items.length === 0 && <tr><td colSpan={8} className="px-3 py-8 text-center text-muted">No events found.</td></tr>}
             </tbody>
           </table>
         </div>

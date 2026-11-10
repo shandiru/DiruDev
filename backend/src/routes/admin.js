@@ -80,8 +80,16 @@ router.get("/stats", async (req, res) => {
     ]),
     Event.aggregate([
       { $match: { ...match, type: "visit_start" } },
-      { $group: { _id: { $ifNull: ["$meta.attribution.source", "Unattributed"] }, visits: { $sum: 1 }, visitors: { $addToSet: "$visitorId" } } },
-      { $project: { _id: 0, source: "$_id", visits: 1, visitors: { $size: "$visitors" } } },
+      { $group: {
+        _id: {
+          source: { $ifNull: ["$meta.attribution.source", "Unattributed"] },
+          medium: { $ifNull: ["$meta.attribution.medium", ""] },
+          campaign: { $ifNull: ["$meta.attribution.campaign", ""] },
+        },
+        visits: { $sum: 1 },
+        visitors: { $addToSet: "$visitorId" },
+      } },
+      { $project: { _id: 0, source: "$_id.source", medium: "$_id.medium", campaign: "$_id.campaign", visits: 1, visitors: { $size: "$visitors" } } },
       { $sort: { visits: -1 } },
     ]),
     LiveSession.aggregate([
