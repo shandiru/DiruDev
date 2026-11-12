@@ -1,16 +1,14 @@
 @import "tailwindcss";
 
-/* 60 / 30 / 10 palette: cobalt blue, snow white and acid lime. */
+/* Original graphite and citron palette. */
 :root {
-  --bg: #2A3BF5;
-  --paper: #F6F4EE;
-  --accent: #D6FF3D;
-  --ink: var(--paper);
-  --accent-strong: var(--accent);
-  --surface: var(--bg);
-  --line: color-mix(in srgb, var(--paper) 24%, transparent);
-  --muted: var(--ink);
-  --on-accent: var(--bg);
+  --bg: #090b0a;
+  --surface: #131715;
+  --line: #2a302c;
+  --ink: #f1f2ec;
+  --muted: #a7ada7;
+  --accent: #d3f36b;
+  --on-accent: #11150a;
   color-scheme: dark;
 }
 
@@ -55,10 +53,6 @@
 .project-panel {
   background: var(--surface);
 }
-.project-panel .text-ink,
-.project-panel .text-muted,
-.project-panel .text-accent { color: var(--bg); }
-.project-panel .border-line { border-color: color-mix(in srgb, var(--bg) 22%, transparent); }
 .project-panel::before {
   position: absolute;
   pointer-events: none;
@@ -70,10 +64,7 @@
   content: "";
 }
 .project-panel:hover { border-color: var(--accent); }
-.project-badge { background: var(--accent-strong); color: var(--on-accent); }
-.text-accent { color: var(--accent-strong); }
-.bg-accent { background-color: var(--accent-strong); }
-.border-accent { border-color: var(--accent); }
+.project-badge { background: var(--accent); color: var(--on-accent); }
 .tech-viewport { overflow: hidden; }
 .tech-track { animation: tech-marquee 72s linear infinite; will-change: transform; }
 .tech-viewport:hover .tech-track,
