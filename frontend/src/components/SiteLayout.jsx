@@ -6,9 +6,53 @@ import { track } from "../lib/track.js";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { pathname, hash } = useLocation();
 
   useEffect(() => setMenuOpen(false), [pathname, hash]);
+
+  useEffect(() => {
+    if (pathname !== "/" || !("IntersectionObserver" in window)) {
+      setActiveSection("");
+      return;
+    }
+    const sections = ["about", "projects", "experience", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const current = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (current) setActiveSection(current.target.id);
+      },
+      { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.1, 0.5, 1] }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  useEffect(() => {
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = `https://imdiru.online${pathname}`;
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  const navLink = (section, label) => (
+    <Link
+      to={`/#${section}`}
+      aria-current={activeSection === section ? "location" : undefined}
+      className={`min-h-11 px-2 py-3 transition-colors hover:text-accent ${activeSection === section ? "text-accent" : "text-muted"}`}
+    >
+      {label}
+    </Link>
+  );
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-bg/90 backdrop-blur">
@@ -18,10 +62,10 @@ function Header() {
           <span className="border border-accent px-1.5 py-0.5 text-[0.65rem] font-bold tracking-[0.16em] text-accent">PORTFOLIO</span>
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-5 text-sm font-medium sm:gap-7 md:flex">
-          <Link to="/#about" className="text-muted hover:text-accent">About</Link>
-          <Link to="/#projects" className="text-muted hover:text-accent">Work</Link>
-          <Link to="/#experience" className="text-muted hover:text-accent">Experience</Link>
-          <Link to="/blog" className="text-muted hover:text-accent">Writing</Link>
+          {navLink("about", "About")}
+          {navLink("projects", "Work")}
+          {navLink("experience", "Experience")}
+          <Link to="/blog" aria-current={pathname.startsWith("/blog") ? "page" : undefined} className={`min-h-11 px-2 py-3 transition-colors hover:text-accent ${pathname.startsWith("/blog") ? "text-accent" : "text-muted"}`}>Writing</Link>
           <Link to="/#contact" data-track="Header: Contact" className={`${btnPrimary} !py-2 text-sm`}>Contact</Link>
         </nav>
         <button
@@ -43,10 +87,10 @@ function Header() {
       {menuOpen && (
         <nav id="mobile-navigation" aria-label="Mobile" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-bg px-5 py-3 md:hidden">
           <div className={`${wrap} flex flex-col items-stretch gap-1 text-sm font-medium`}>
-            <Link to="/#about" className="px-2 py-3 text-muted hover:text-accent">About</Link>
-            <Link to="/#projects" className="px-2 py-3 text-muted hover:text-accent">Work</Link>
-            <Link to="/#experience" className="px-2 py-3 text-muted hover:text-accent">Experience</Link>
-            <Link to="/blog" className="px-2 py-3 text-muted hover:text-accent">Writing</Link>
+            {navLink("about", "About")}
+            {navLink("projects", "Work")}
+            {navLink("experience", "Experience")}
+            <Link to="/blog" aria-current={pathname.startsWith("/blog") ? "page" : undefined} className={`min-h-11 px-2 py-3 transition-colors hover:text-accent ${pathname.startsWith("/blog") ? "text-accent" : "text-muted"}`}>Writing</Link>
             <Link to="/#contact" data-track="Header: Contact" className={`${btnPrimary} mt-2 justify-center text-sm`}>Contact</Link>
           </div>
         </nav>
@@ -120,7 +164,10 @@ function useTracking() {
 function useHashScroll() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    if (!hash) return window.scrollTo(0, 0);
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
     const t = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView(), 60);
     return () => clearTimeout(t);
   }, [pathname, hash]);
@@ -131,17 +178,19 @@ export default function SiteLayout() {
   useHashScroll();
   return (
     <>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Outlet />
       </main>
       <footer className="border-t border-line">
         <div className={`${wrap} flex flex-col gap-5 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between`}>
           <span><span className="font-semibold text-ink">{profile.name}</span> - Based in {profile.location}</span>
-          <div className="flex flex-wrap items-center gap-5">
-            <Link to="/#projects" className="hover:text-accent">Work</Link>
-            <Link to="/blog" className="hover:text-accent">Writing</Link>
-            <a href={`mailto:${profile.email}`} className="hover:text-accent">Email</a>
+          <div className="flex flex-wrap items-center gap-3 sm:gap-5">
+            <Link to="/#projects" className="min-h-11 inline-flex items-center px-1 hover:text-accent">Work</Link>
+            <Link to="/#contact" className="min-h-11 inline-flex items-center px-1 text-accent">Start a project</Link>
+            <Link to="/blog" className="min-h-11 inline-flex items-center px-1 hover:text-accent">Writing</Link>
+            <a href={`mailto:${profile.email}`} className="min-h-11 inline-flex items-center px-1 hover:text-accent">Email</a>
           </div>
         </div>
       </footer>

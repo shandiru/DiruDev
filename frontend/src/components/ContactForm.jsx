@@ -41,7 +41,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={submit} className="grid gap-4" noValidate>
+    <form onSubmit={submit} className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-1.5 text-sm font-medium">
           Name <span className="text-accent">*</span>

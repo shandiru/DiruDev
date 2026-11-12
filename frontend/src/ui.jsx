@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const wrap = "mx-auto w-full max-w-[1080px] px-5 sm:px-8";
+export const wrap = "page-wrap";
 export const btn =
   "inline-flex min-h-11 items-center justify-center border px-5 py-2.5 text-[0.95rem] font-semibold transition-colors";
 export const btnPrimary = `${btn} primary-action border-accent bg-accent text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60`;
@@ -42,7 +42,7 @@ export function Reveal({ children, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition duration-500 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${
+      className={`transition duration-300 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${
         hidden ? "translate-y-3 opacity-0" : "translate-y-0 opacity-100"
       } ${className}`}
     >
@@ -53,7 +53,7 @@ export function Reveal({ children, className = "" }) {
 
 export function Section({ id, title, children }) {
   return (
-    <section id={id} className={`${wrap} py-16 md:py-24`}>
+    <section id={id} className={`${wrap} page-section`}>
       <Reveal>
       <h2 className="section-heading mb-10 text-[clamp(1.8rem,4vw,2.6rem)] font-bold leading-tight tracking-[-0.04em] md:mb-14">
           {title}

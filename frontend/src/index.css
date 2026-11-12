@@ -9,6 +9,13 @@
   --muted: #a7ada7;
   --accent: #d3f36b;
   --on-accent: #11150a;
+  --container-max: 67.5rem;
+  --page-gutter: 1.25rem;
+  --section-space: 4rem;
+  --body-leading: 1.6;
+  --content-measure: 70ch;
+  --radius-card: 0.25rem;
+  --shadow-panel: 0 16px 44px rgb(0 0 0 / 0.16);
   color-scheme: dark;
 }
 
@@ -27,6 +34,7 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 72px;
+    overflow-x: clip;
     -webkit-text-size-adjust: 100%;
   }
   body {
@@ -34,6 +42,7 @@
     position: relative;
     overflow-x: clip;
     background-color: var(--bg);
+    line-height: var(--body-leading);
   }
   body::before {
     position: fixed;
@@ -48,10 +57,31 @@
     outline: 3px solid var(--accent);
     outline-offset: 3px;
   }
+  main:focus { outline: none; }
 }
+
+.page-wrap {
+  width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), var(--container-max));
+  margin-inline: auto;
+}
+.page-section { padding-block: var(--section-space); }
+.skip-link {
+  position: fixed;
+  z-index: 50;
+  top: 0.75rem;
+  left: 0.75rem;
+  transform: translateY(-150%);
+  border: 1px solid var(--accent);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  color: var(--ink);
+}
+.skip-link:focus { transform: translateY(0); }
 
 .project-panel {
   background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-panel);
 }
 .project-panel::before {
   position: absolute;
@@ -65,7 +95,8 @@
 }
 .project-panel:hover { border-color: var(--accent); }
 .project-badge { background: var(--accent); color: var(--on-accent); }
-.tech-viewport { overflow: hidden; }
+.card-link { border-radius: var(--radius-card); }
+.tech-viewport { overflow: hidden; overflow: clip; }
 .tech-track { animation: tech-marquee 72s linear infinite; will-change: transform; }
 .tech-viewport:hover .tech-track,
 .tech-viewport:focus-within .tech-track { animation-play-state: paused; }
@@ -117,6 +148,13 @@
 }
 .card-link { transition: border-color 180ms ease; }
 select option { background: var(--bg); color: var(--ink); }
+
+@media (min-width: 640px) {
+  :root { --page-gutter: 2rem; }
+}
+@media (min-width: 768px) {
+  :root { --section-space: 6rem; }
+}
 
 @media (max-width: 639px) {
   .timeline-entry { padding-left: 1rem; }

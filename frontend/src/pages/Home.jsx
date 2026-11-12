@@ -32,16 +32,16 @@ function Hero() {
   return (
     <section id="top" className={`${wrap} grid gap-9 pb-14 pt-14 sm:pt-20 md:grid-cols-[1.35fr_0.65fr] md:items-end md:gap-16 md:pb-24 md:pt-32`}>
       <div>
-        <p data-hero-kicker className="mb-5 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent"><span className="h-px w-8 bg-accent" />Software engineer / Sri Lanka</p>
+        <p data-hero-kicker className="mb-5 flex flex-wrap items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent"><span className="h-px w-8 shrink-0 bg-accent" />Software engineer / Sri Lanka</p>
         <h1 className="max-w-[15ch] text-[clamp(2.8rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.055em]">
-          Web apps and sites, built to work.
+          Web apps and websites for growing businesses.
         </h1>
         <p data-hero-copy className="mt-7 max-w-[52ch] text-lg leading-8 text-muted">
-          I'm Dirushan. I build web applications and business websites, and help teams keep the tools they rely on running well.
+          I'm Dirushan, a software engineer in Sri Lanka. I build full-stack applications and business websites for clients in the UK and Australia.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a data-hero-action href="#projects" className={btnPrimary}>See selected work</a>
-          <a data-hero-action href="#contact" className={btnQuiet}>Get in touch</a>
+        <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <a data-hero-action href="#contact" className={`${btnPrimary} w-full sm:w-auto`}>Discuss a project</a>
+          <a data-hero-action href="#projects" className={`${btnQuiet} w-full sm:w-auto`}>See selected work</a>
         </div>
       </div>
       <aside className="grid content-end gap-7 md:mb-1 md:pl-8">
@@ -114,7 +114,7 @@ function Projects({ projects }) {
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-accent">{String(i + 1).padStart(2, "0")} / Project</p>
               <h3 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{p.name}</h3>
               <p className="mt-3 max-w-[48ch] leading-7 text-muted">{p.text}</p>
-              <a href={p.url} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink transition hover:text-accent">
+              <a href={p.url} target="_blank" rel="noreferrer" className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink transition hover:text-accent">
                 View project <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
@@ -152,22 +152,33 @@ function Experience() {
 function About() {
   return (
     <Section id="about" title="A little about me">
-      <Reveal className="grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-16">
-        <div>
-          {profile.about.map((t) => (
-            <p key={t} className="mb-4 max-w-[56ch] text-lg text-muted">
-              {t}
-            </p>
-          ))}
+      <Reveal className="grid gap-8 md:grid-cols-[220px_1fr] md:gap-10 lg:gap-14">
+        <img
+          src="/profile-dirushan.webp"
+          alt="Portrait of Dirushan"
+          width="520"
+          height="630"
+          loading="lazy"
+          decoding="async"
+          className="aspect-[5/6] w-full max-w-[320px] object-cover md:max-w-none"
+        />
+        <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:gap-10">
+          <div>
+            {profile.about.map((t) => (
+              <p key={t} className="mb-4 max-w-[56ch] text-lg text-muted">
+                {t}
+              </p>
+            ))}
+          </div>
+          <dl className="grid content-start gap-5">
+            {skills.map((s) => (
+              <div key={s.group}>
+                <dt className="font-semibold text-accent">{s.group}</dt>
+                <dd className="text-muted">{s.items}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className="grid content-start gap-5">
-          {skills.map((s) => (
-            <div key={s.group}>
-              <dt className="font-semibold text-accent">{s.group}</dt>
-              <dd className="text-muted">{s.items}</dd>
-            </div>
-          ))}
-        </dl>
       </Reveal>
     </Section>
   );
@@ -216,14 +227,14 @@ function Contact() {
             <p className="mb-5 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent"><span className="h-px w-8 bg-accent" />Contact</p>
             <h2 className="max-w-[12ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.05em]">Have something in mind?</h2>
             <p className="mt-5 max-w-[38ch] leading-7 text-muted">Tell me a little about the project and what you need. I’ll get back to you by email.</p>
-            <a href={`mailto:${profile.email}`} className="mt-8 inline-block text-lg font-semibold text-accent [overflow-wrap:anywhere] hover:text-ink">
+            <a href={`mailto:${profile.email}`} className="mt-8 inline-flex min-h-11 items-center text-lg font-semibold text-accent [overflow-wrap:anywhere] hover:text-ink">
               {profile.email}
             </a>
             <div className="mt-6 flex flex-wrap items-center gap-5 text-sm">
-              <button type="button" onClick={copyEmail} className="cursor-pointer text-muted hover:text-accent">
+              <button type="button" onClick={copyEmail} className="min-h-11 cursor-pointer px-1 text-muted hover:text-accent">
                 {copied ? "Email copied" : "Copy email"}
               </button>
-              <a href={profile.github} target="_blank" rel="noreferrer" className="text-muted hover:text-accent">GitHub</a>
+              <a href={profile.github} target="_blank" rel="noreferrer" className="min-h-11 inline-flex items-center px-1 text-muted hover:text-accent">GitHub</a>
             </div>
           </Reveal>
           <div className="border-t border-line pt-8 md:border-l md:border-t-0 md:pl-12 md:pt-0">
@@ -259,8 +270,45 @@ export default function Home() {
       <About />
       <Experience />
       <Projects projects={projects} />
+      <HowIWork />
+      <MidPageCTA />
       <LatestPosts />
       <Contact />
     </>
+  );
+}
+
+function HowIWork() {
+  const steps = [
+    ["01", "Scope", "We clarify what you need, who it is for, and what a useful first release looks like."],
+    ["02", "Build", "I share progress as the application or site takes shape, with room for feedback along the way."],
+    ["03", "Launch and support", "I handle deployment and can stay on to fix issues and make the next improvements."],
+  ];
+  return (
+    <Section id="process" title="A straightforward way to work">
+      <div className="grid gap-8 border-y border-line py-8 md:grid-cols-3 md:gap-10">
+        {steps.map(([number, title, text]) => (
+          <div key={number}>
+            <p className="text-sm font-semibold text-accent">{number}</p>
+            <h3 className="mt-3 text-xl font-bold">{title}</h3>
+            <p className="mt-2 max-w-[38ch] text-muted">{text}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function MidPageCTA() {
+  return (
+    <section className="border-y border-line bg-surface py-10 md:py-12">
+      <div className={`${wrap} flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between`}>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Need a website or web app?</h2>
+          <p className="mt-1 max-w-[54ch] text-muted">Tell me what you have in mind and I’ll reply by email.</p>
+        </div>
+        <a href="#contact" className={btnPrimary}>Start a conversation</a>
+      </div>
+    </section>
   );
 }

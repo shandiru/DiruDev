@@ -25,14 +25,14 @@ export default function Post() {
 
   return (
     <article className={`${wrap} max-w-[760px] py-16 md:py-24`}>
-      <Link to="/blog" className="text-sm text-muted hover:text-accent">&larr; All writing</Link>
+      <Link to="/blog" className="min-h-11 inline-flex items-center text-sm text-muted hover:text-accent">&larr; All writing</Link>
       {error && <p className="mt-10 border border-accent p-4 text-ink">This post could not be loaded. Return to the writing page and try again.</p>}
       {!post && !error && <p className="mt-10 text-muted">Loading post...</p>}
       {post && (
         <>
           <p className="mt-8 text-sm text-muted">{fmtDate(post.publishedAt)}</p>
           <h1 className="mt-2 text-[clamp(2rem,5vw,3.2rem)] font-bold leading-tight tracking-[-0.03em]">{post.title}</h1>
-          {post.coverImage && <img src={post.coverImage} alt="" className="mt-8 w-full  border border-line" />}
+          {post.coverImage && <img src={post.coverImage} alt={post.title} width="1200" height="630" className="mt-8 h-auto w-full border border-line" />}
           <div className="mt-10"><Markdown text={post.content} /></div>
           <Link to="/#contact" className="mt-14 inline-block border-b border-accent pb-1 text-accent hover:text-ink">Have a project in mind? Get in touch &rarr;</Link>
         </>

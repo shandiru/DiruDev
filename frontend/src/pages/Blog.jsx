@@ -25,7 +25,7 @@ export default function Blog() {
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         {posts?.map((p) => (
           <Link key={p.slug} to={`/blog/${p.slug}`} className="card-link group overflow-hidden border border-line bg-surface hover:border-accent">
-            {p.coverImage && <img src={p.coverImage} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />}
+            {p.coverImage && <img src={p.coverImage} alt={p.title} width="1200" height="675" loading="lazy" className="aspect-[16/9] w-full object-cover" />}
             <div className="p-6">
               <p className="text-xs text-muted">{fmtDate(p.publishedAt)}</p>
               <h2 className="mt-2 text-xl font-bold tracking-tight group-hover:text-accent">{p.title} <span aria-hidden="true">↗</span></h2>
