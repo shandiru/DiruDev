@@ -226,7 +226,7 @@ function Contact() {
           <Reveal>
             <p className="mb-5 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent"><span className="h-px w-8 bg-accent" />Contact</p>
             <h2 className="max-w-[12ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.05em]">Have something in mind?</h2>
-            <p className="mt-5 max-w-[38ch] leading-7 text-muted">Tell me a little about the project and what you need. I’ll get back to you by email.</p>
+            <p className="mt-5 max-w-[38ch] leading-7 text-muted">Tell me a little about the project and what you need. I'll get back to you by email.</p>
             <a href={`mailto:${profile.email}`} className="mt-8 inline-flex min-h-11 items-center text-lg font-semibold text-accent [overflow-wrap:anywhere] hover:text-ink">
               {profile.email}
             </a>
@@ -305,7 +305,7 @@ function MidPageCTA() {
       <div className={`${wrap} flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between`}>
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Need a website or web app?</h2>
-          <p className="mt-1 max-w-[54ch] text-muted">Tell me what you have in mind and I’ll reply by email.</p>
+          <p className="mt-1 max-w-[54ch] text-muted">Tell me what you have in mind and I'll reply by email.</p>
         </div>
         <a href="#contact" className={btnPrimary}>Start a conversation</a>
       </div>

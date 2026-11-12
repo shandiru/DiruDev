@@ -57,7 +57,7 @@ function Header() {
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-bg/90 backdrop-blur">
       <div className={`${wrap} relative flex h-16 items-center justify-between gap-4`}>
-        <Link to="/" aria-label="DIRU DEV" className="inline-flex shrink-0 items-baseline gap-2 tracking-[-0.06em]">
+        <Link to="/" aria-label="DIRU DEV" className="inline-flex min-h-11 shrink-0 items-center gap-2 tracking-[-0.06em]">
           <span className="text-xl font-black text-ink">DIRU</span>
           <span className="border border-accent px-1.5 py-0.5 text-[0.65rem] font-bold tracking-[0.16em] text-accent">PORTFOLIO</span>
         </Link>

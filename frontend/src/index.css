@@ -119,7 +119,7 @@
 }
 
 /* Blog / markdown content */
-.prose-lite { color: var(--muted); font-size: 1.075rem; line-height: 1.8; overflow-wrap: anywhere; }
+.prose-lite { max-width: var(--content-measure); color: var(--muted); font-size: 1.075rem; line-height: 1.8; overflow-wrap: anywhere; }
 .prose-lite > * + * { margin-top: 1.1em; }
 .prose-lite h1, .prose-lite h2, .prose-lite h3 { color: var(--ink); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; margin-top: 1.8em; }
 .prose-lite h1 { font-size: 1.9rem; } .prose-lite h2 { font-size: 1.5rem; } .prose-lite h3 { font-size: 1.2rem; }
