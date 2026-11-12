@@ -70,7 +70,7 @@ function TechStack() {
               <div key={String(duplicate)} aria-hidden={duplicate || undefined} className="tech-group flex shrink-0 items-center gap-12 pr-12 md:gap-16 md:pr-16">
                 {tools.map(([name, icon]) => (
                   <div data-tool-logo key={`${duplicate}-${name}`} className="flex min-h-14 shrink-0 items-center gap-4 text-base font-semibold text-ink">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-10 w-10 shrink-0 text-accent sm:h-12 sm:w-12">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-10 w-10 shrink-0 sm:h-12 sm:w-12" style={{ color: `#${icon.hex}` }}>
                       <path fill="currentColor" d={icon.path} />
                     </svg>
                     <span>{name}</span>

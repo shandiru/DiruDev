@@ -116,8 +116,6 @@
   content: "";
 }
 .card-link { transition: border-color 180ms ease; }
-.tech-track svg { color: var(--accent); }
-
 select option { background: var(--bg); color: var(--ink); }
 
 @media (max-width: 639px) {
