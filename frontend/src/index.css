@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
-/* 60 / 30 / 10 palette: sage, warm off-white and tomato red. */
+/* 60 / 30 / 10 palette: charcoal, silver and yellow. */
 :root {
-  --bg: #9CAF88;
-  --paper: #F7F5EF;
-  --accent: #E8412C;
-  --ink: color-mix(in srgb, var(--bg) 20%, #111);
-  --accent-strong: color-mix(in srgb, var(--accent) 68%, var(--ink));
-  --surface: var(--paper);
-  --line: color-mix(in srgb, var(--ink) 24%, transparent);
+  --bg: #2B2D31;
+  --paper: #D9DADC;
+  --accent: #FFC93C;
+  --ink: var(--paper);
+  --accent-strong: var(--accent);
+  --surface: var(--bg);
+  --line: color-mix(in srgb, var(--paper) 24%, transparent);
   --muted: var(--ink);
-  --on-accent: var(--paper);
-  color-scheme: light;
+  --on-accent: var(--bg);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -57,7 +57,7 @@
 }
 .project-panel .text-ink,
 .project-panel .text-muted,
-.project-panel .text-accent { color: var(--ink); }
+.project-panel .text-accent { color: var(--bg); }
 .project-panel .border-line { border-color: color-mix(in srgb, var(--bg) 22%, transparent); }
 .project-panel::before {
   position: absolute;
