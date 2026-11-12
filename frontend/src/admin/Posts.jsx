@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { adminApi } from "../lib/api.js";
 import { useLoad } from "./hooks.js";
-import { btnPrimary, btnQuiet, fmtDate } from "../ui.jsx";
+import { btnPrimary, btnQuiet, fmtDate, LoadingState } from "../ui.jsx";
 
 export default function Posts() {
   const { data, error, loading, setData } = useLoad(() => adminApi.get("/posts"), []);
@@ -23,7 +23,7 @@ export default function Posts() {
         <Link to="/admin/posts/new" className={`${btnPrimary} !py-2 text-sm`}>New post</Link>
       </div>
       {(error || err) && <p className="text-accent">{error || err}</p>}
-      {loading && !data && <p className="text-muted">Loading...</p>}
+      {loading && !data && <LoadingState label="Fetching your posts" />}
       {data?.length === 0 && <p className="text-muted">No posts yet. Create your first one.</p>}
       <ul className="grid gap-3">
         {data?.map((p) => (

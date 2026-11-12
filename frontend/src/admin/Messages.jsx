@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { adminApi } from "../lib/api.js";
 import { useLoad, when } from "./hooks.js";
-import { btnQuiet } from "../ui.jsx";
+import { btnQuiet, LoadingState } from "../ui.jsx";
 
 export default function Messages() {
   const { data, error, loading, setData } = useLoad(() => adminApi.get("/contacts"), []);
@@ -30,7 +30,7 @@ export default function Messages() {
     <div className="grid gap-6">
       <h1 className="text-2xl font-bold tracking-tight">Messages</h1>
       {(error || err) && <p className="text-accent">{error || err}</p>}
-      {loading && !data && <p className="text-muted">Loading...</p>}
+      {loading && !data && <LoadingState label="Checking your inbox" />}
       {data?.length === 0 && <p className="text-muted">No messages yet.</p>}
 
       <ul className="grid gap-3">

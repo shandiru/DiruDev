@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { wrap, fmtDate } from "../ui.jsx";
+import { wrap, fmtDate, LoadingState } from "../ui.jsx";
 import { api } from "../lib/api.js";
 
 export default function Blog() {
@@ -19,7 +19,7 @@ export default function Blog() {
       <p className="mt-3 max-w-[50ch] text-lg text-muted">Things I've learned while building web apps, working with clients, and figuring out what makes a site useful.</p>
 
       {error && <p className="mt-10 border border-accent p-4 text-ink">Couldn't load posts right now. Please try again later.</p>}
-      {!posts && !error && <p className="mt-10 text-muted">Loading posts...</p>}
+      {!posts && !error && <LoadingState label="Getting the latest writing" />}
       {posts && posts.length === 0 && <p className="mt-10 border-t border-line py-6 text-muted">No posts published yet.</p>}
 
       <div className="mt-12 grid gap-6 md:grid-cols-2">

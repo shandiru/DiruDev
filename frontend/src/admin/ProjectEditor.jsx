@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { adminApi } from "../lib/api.js";
-import { btnPrimary, btnQuiet, field } from "../ui.jsx";
+import { btnPrimary, btnQuiet, field, LoadingState } from "../ui.jsx";
 
 const blank = { name: "", url: "", text: "", own: false, active: true, order: 0 };
 
@@ -38,7 +38,7 @@ export default function ProjectEditor() {
     }
   }
 
-  if (loading) return <p className="text-muted">Loading project...</p>;
+  if (loading) return <LoadingState label="Opening the project editor" />;
 
   return (
     <form onSubmit={save} className="grid max-w-3xl gap-5">

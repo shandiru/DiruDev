@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { adminApi } from "../lib/api.js";
 import { useLoad } from "./hooks.js";
-import { btnPrimary, btnQuiet } from "../ui.jsx";
+import { btnPrimary, btnQuiet, LoadingState } from "../ui.jsx";
 
 export default function Projects() {
   const { data, error, loading, setData } = useLoad(() => adminApi.get("/projects"), []);
@@ -29,7 +29,7 @@ export default function Projects() {
         <Link to="/admin/projects/new" className={`${btnPrimary} !py-2 text-center text-sm`}>+ Add project</Link>
       </div>
       {(error || err) && <p role="alert" className="text-accent">{error || err}</p>}
-      {loading && !data && <p className="text-muted">Loading projects...</p>}
+      {loading && !data && <LoadingState label="Fetching your projects" />}
       {data?.length === 0 && <div className="border border-dashed border-line bg-surface/60 p-8 text-center"><p className="font-semibold">No additional projects yet</p><p className="mt-1 text-sm text-muted">Add a project to show it on your website.</p></div>}
       <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {data?.map((project) => (

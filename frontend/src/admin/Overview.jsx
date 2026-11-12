@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { adminApi } from "../lib/api.js";
 import { useLoad } from "./hooks.js";
-import { field } from "../ui.jsx";
+import { field, LoadingState } from "../ui.jsx";
 
 const Card = ({ label, value, live = false }) => (
   <div className=" border border-line bg-surface p-5">
@@ -137,7 +137,7 @@ export default function Overview() {
       </div>
 
       {error && <p className="text-accent">{error}</p>}
-      {loading && !data && <p className="text-muted">Loading...</p>}
+      {loading && !data && <LoadingState label="Gathering your site stats" />}
 
       {data && (
         <>

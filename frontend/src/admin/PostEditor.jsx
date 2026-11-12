@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { adminApi } from "../lib/api.js";
-import { btnPrimary, btnQuiet, field } from "../ui.jsx";
+import { btnPrimary, btnQuiet, field, LoadingState } from "../ui.jsx";
 import Markdown from "../components/Markdown.jsx";
 
 const blank = { title: "", excerpt: "", content: "", coverImage: "", tags: "", published: false };
@@ -48,7 +48,7 @@ export default function PostEditor() {
     }
   }
 
-  if (loading) return <p className="text-muted">Loading...</p>;
+  if (loading) return <LoadingState label="Opening the post editor" />;
 
   return (
     <form onSubmit={save} className="grid gap-5">

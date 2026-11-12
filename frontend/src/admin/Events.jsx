@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { adminApi } from "../lib/api.js";
 import { useLoad, when } from "./hooks.js";
-import { btnQuiet, field } from "../ui.jsx";
+import { btnQuiet, field, LoadingState } from "../ui.jsx";
 
 const types = ["", "visit_start", "visit_end", "page_view", "click", "section_view", "blog_view", "contact_submit", "contact_form_success"];
 
@@ -40,7 +40,7 @@ export default function Events() {
       </div>
 
       {error && <p className="text-accent">{error}</p>}
-      {loading && !data && <p className="text-muted">Loading...</p>}
+      {loading && !data && <LoadingState label="Fetching recent activity" />}
 
       {data && (
         <div className="overflow-x-auto  border border-line">

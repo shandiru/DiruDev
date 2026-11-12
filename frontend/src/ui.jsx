@@ -8,6 +8,16 @@ export const btnQuiet = `${btn} border-line hover:border-accent hover:text-accen
 export const field =
   "w-full border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
 
+export function LoadingState({ label = "Loading" }) {
+  return (
+    <div role="status" className="mt-10 flex items-center gap-3 text-sm text-muted">
+      <span aria-hidden="true" className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-line border-t-accent motion-reduce:animate-none" />
+      <span>{label}<span className="loading-dots" aria-hidden="true">...</span></span>
+      <span className="sr-only">Please wait</span>
+    </div>
+  );
+}
+
 /* Fades content in when it scrolls into view.
    Content is visible by default and only hidden after we know the observer works,
    so previews / iframes / old browsers can never end up with a blank page. */

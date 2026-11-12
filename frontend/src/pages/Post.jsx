@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { wrap, fmtDate } from "../ui.jsx";
+import { wrap, fmtDate, LoadingState } from "../ui.jsx";
 import { api } from "../lib/api.js";
 import { track } from "../lib/track.js";
 import Markdown from "../components/Markdown.jsx";
@@ -27,7 +27,7 @@ export default function Post() {
     <article className={`${wrap} max-w-[760px] py-16 md:py-24`}>
       <Link to="/blog" className="min-h-11 inline-flex items-center text-sm text-muted hover:text-accent">&larr; All writing</Link>
       {error && <p className="mt-10 border border-accent p-4 text-ink">This post could not be loaded. Return to the writing page and try again.</p>}
-      {!post && !error && <p className="mt-10 text-muted">Loading post...</p>}
+      {!post && !error && <LoadingState label="Opening this post" />}
       {post && (
         <>
           <p className="mt-8 text-sm text-muted">{fmtDate(post.publishedAt)}</p>
