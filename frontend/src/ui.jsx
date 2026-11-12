@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export const wrap = "mx-auto w-full max-w-[1080px] px-5 sm:px-8";
 export const btn =
   "inline-flex min-h-11 items-center justify-center border px-5 py-2.5 text-[0.95rem] font-semibold transition-colors";
-export const btnPrimary = `${btn} border-accent bg-accent text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60`;
+export const btnPrimary = `${btn} primary-action border-accent bg-accent text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60`;
 export const btnQuiet = `${btn} border-line hover:border-accent hover:text-accent`;
 export const field =
   "w-full border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
