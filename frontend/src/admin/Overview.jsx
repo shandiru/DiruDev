@@ -41,9 +41,9 @@ function updateLocationMarkers(L, layer, locations) {
     const label = [location.city, location.region, location.country].filter(Boolean).join(", ") || "Location unavailable";
     const marker = L.circleMarker([latitude, longitude], {
       radius: Math.min(14, 6 + Math.log2(users)),
-      color: "#2b2d31",
+      color: "#0E1219",
       weight: 2,
-      fillColor: "#FFC9C9",
+      fillColor: "#1EA7FF",
       fillOpacity: 0.9,
     }).addTo(layer);
     const tooltip = document.createElement("span");

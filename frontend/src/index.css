@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-/* Portfolio palette: charcoal, soft grey and pale pink. */
+/* 60 / 30 / 10 palette: midnight carbon, ivory cream and electric azure. */
 :root {
-  --bg: #2b2d31;
-  --ink: #D9DADC;
-  --accent: #FFC9C9;
+  --bg: #0E1219;
+  --ink: #EFE6D2;
+  --accent: #1EA7FF;
   --surface: var(--bg);
   --line: color-mix(in srgb, var(--ink) 22%, transparent);
   --muted: var(--ink);
@@ -51,8 +51,12 @@
 }
 
 .project-panel {
-  background: var(--bg);
+  background: var(--ink);
 }
+.project-panel .text-ink,
+.project-panel .text-muted,
+.project-panel .text-accent { color: var(--bg); }
+.project-panel .border-line { border-color: color-mix(in srgb, var(--bg) 22%, transparent); }
 .project-panel::before {
   position: absolute;
   pointer-events: none;
