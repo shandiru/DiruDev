@@ -7,8 +7,8 @@ export const profile = {
   summary:
     "Software engineer and freelance MERN developer. Two years of experience and 70+ projects delivered.",
   about: [
-    "I am a software engineer from Sri Lanka, with a BSc (Hons) in Software Engineering from the University of Kelaniya.",
-    "For UK freelance clients I build MERN apps and websites from brief to launch. At Amplifyd in Colombo I work on Australian client projects, maintaining and improving Laravel and WordPress sites.",
+    "I'm Dirushan, a software engineer in Sri Lanka with a BSc (Hons) in Software Engineering from the University of Kelaniya. I split my time between product work and projects for clients abroad.",
+    "As a freelancer, I work directly with UK clients from the first conversation through launch and support. At Amplifyd in Colombo, I build and maintain Laravel and WordPress products for Australian clients. I enjoy the practical part of the job: understanding what is slowing a team down, then shipping a fix people can use.",
   ],
 };
 

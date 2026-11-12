@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-/* Graphite, warm white and a sharp citron accent. */
+/* A three-colour palette: ink, paper and warm orange. */
 :root {
-  --bg: #090b0a;
-  --surface: #131715;
-  --line: #2a302c;
-  --ink: #f1f2ec;
-  --muted: #a7ada7;
-  --accent: #d3f36b;
-  --on-accent: #11150a;
+  --bg: #111416;
+  --ink: #f2eee7;
+  --accent: #f2a65a;
+  --surface: color-mix(in srgb, var(--bg) 88%, var(--ink));
+  --line: color-mix(in srgb, var(--bg) 72%, var(--ink));
+  --muted: color-mix(in srgb, var(--ink) 66%, var(--bg));
+  --on-accent: var(--bg);
   color-scheme: dark;
 }
 
@@ -21,11 +21,6 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --font-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
-  @keyframes ambient-drift {
-    0% { background-position: 0% 0%, 100% 100%; }
-    50% { background-position: 70% 20%, 30% 80%; }
-    100% { background-position: 100% 70%, 0% 20%; }
-  }
 }
 
 @layer base {
@@ -37,7 +32,7 @@
   body {
     @apply bg-bg text-ink font-sans text-base leading-relaxed antialiased;
     position: relative;
-    overflow-x: hidden;
+    overflow-x: clip;
     background-color: var(--bg);
   }
   body::before {
@@ -45,12 +40,7 @@
     z-index: 0;
     inset: 0;
     pointer-events: none;
-    background-image:
-      radial-gradient(ellipse 36rem 25rem at 24% 20%, color-mix(in srgb, var(--accent) 19%, transparent), transparent 72%),
-      radial-gradient(ellipse 34rem 28rem at 78% 72%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 74%);
-    background-size: 150% 150%, 160% 160%;
-    background-position: 0% 0%, 100% 100%;
-    animation: ambient-drift 32s ease-in-out infinite alternate;
+    background-image: linear-gradient(to bottom, color-mix(in srgb, var(--ink) 2%, transparent), transparent 30rem);
     content: "";
   }
   #root { position: relative; z-index: 1; min-height: 100vh; }
@@ -88,10 +78,14 @@
   html {
     scroll-behavior: auto;
   }
-  body::before { animation: none; }
   .tech-viewport { overflow-x: auto; }
   .tech-track { animation: none; transform: none !important; }
   .tech-group[aria-hidden="true"] { display: none; }
+}
+
+@media (max-width: 639px) {
+  html { scroll-padding-top: 64px; }
+  .tech-track { animation-duration: 96s; }
 }
 
 /* Blog / markdown content */

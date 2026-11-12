@@ -40,7 +40,7 @@ function Header() {
         </button>
       </div>
       {menuOpen && (
-        <nav id="mobile-navigation" aria-label="Mobile" className="border-t border-line bg-bg px-5 py-3 md:hidden">
+        <nav id="mobile-navigation" aria-label="Mobile" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-bg px-5 py-3 md:hidden">
           <div className={`${wrap} flex flex-col items-stretch gap-1 text-sm font-medium`}>
             <Link to="/#projects" className="px-2 py-3 text-muted hover:text-ink">Projects</Link>
             <Link to="/#experience" className="px-2 py-3 text-muted hover:text-ink">Experience</Link>
