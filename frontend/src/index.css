@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-/* 60 / 30 / 10 palette: charcoal, silver and yellow. */
+/* 60 / 30 / 10 palette: cobalt blue, snow white and acid lime. */
 :root {
-  --bg: #2B2D31;
-  --paper: #D9DADC;
-  --accent: #FFC93C;
+  --bg: #2A3BF5;
+  --paper: #F6F4EE;
+  --accent: #D6FF3D;
   --ink: var(--paper);
   --accent-strong: var(--accent);
   --surface: var(--bg);
