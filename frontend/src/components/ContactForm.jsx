@@ -30,7 +30,7 @@ export default function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div role="status" className=" border border-accent/50 bg-surface p-6">
+      <div role="status" className="border border-accent bg-surface p-6">
         <h3 className="text-xl font-bold">Message sent</h3>
         <p className="mt-2 text-muted">Thanks for reaching out. I will reply to your email soon.</p>
         <button type="button" onClick={() => setStatus("idle")} className="mt-4 text-accent hover:text-ink">
@@ -44,11 +44,11 @@ export default function ContactForm() {
     <form onSubmit={submit} className="grid gap-4" noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-1.5 text-sm font-medium">
-          Name *
+          Name <span className="text-accent">*</span>
           <input className={field} value={f.name} onChange={set("name")} required maxLength={100} autoComplete="name" placeholder="Your name" />
         </label>
         <label className="grid gap-1.5 text-sm font-medium">
-          Email *
+          Email <span className="text-accent">*</span>
           <input className={field} type="email" value={f.email} onChange={set("email")} required maxLength={200} autoComplete="email" placeholder="you@example.com" />
         </label>
         <label className="grid gap-1.5 text-sm font-medium">
@@ -68,14 +68,14 @@ export default function ContactForm() {
         <input className={field} value={f.subject} onChange={set("subject")} maxLength={150} placeholder="e.g. New website for my business" />
       </label>
       <label className="grid gap-1.5 text-sm font-medium">
-        Message *
+        Message <span className="text-accent">*</span>
         <textarea className={`${field} min-h-36 resize-y`} value={f.message} onChange={set("message")} required minLength={10} maxLength={5000} placeholder="Tell me what you want to build and when you need it." />
       </label>
 
       {/* Honeypot: hidden from people, bots fill it in. */}
       <input tabIndex={-1} autoComplete="off" aria-hidden="true" value={f.website} onChange={set("website")} className="absolute left-[-9999px] h-0 w-0 opacity-0" name="website" />
 
-      {status === "error" && <p role="alert" className="text-sm text-red-400">{error}</p>}
+      {status === "error" && <p role="alert" className="border border-accent p-3 text-sm text-ink">{error || "Your message couldn’t be sent. Please try again."}</p>}
       <div>
         <button type="submit" disabled={status === "sending"} className={`${btnPrimary} cursor-pointer`}>
           {status === "sending" ? "Sending..." : "Send message"}

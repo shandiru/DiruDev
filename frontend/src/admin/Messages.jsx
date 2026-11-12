@@ -29,7 +29,7 @@ export default function Messages() {
   return (
     <div className="grid gap-6">
       <h1 className="text-2xl font-bold tracking-tight">Messages</h1>
-      {(error || err) && <p className="text-red-400">{error || err}</p>}
+      {(error || err) && <p className="text-accent">{error || err}</p>}
       {loading && !data && <p className="text-muted">Loading...</p>}
       {data?.length === 0 && <p className="text-muted">No messages yet.</p>}
 
@@ -59,7 +59,7 @@ export default function Messages() {
                 <div className="mt-4 flex flex-wrap gap-3">
                   <a className={`${btnQuiet} !py-1.5 text-sm`} href={`mailto:${c.email}?subject=Re: ${encodeURIComponent(c.subject || "your message")}`}>Reply by email</a>
                   <button type="button" onClick={() => toggleRead(c, !c.read)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm`}>Mark as {c.read ? "unread" : "read"}</button>
-                  <button type="button" onClick={() => remove(c)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-red-400`}>Delete</button>
+                  <button type="button" onClick={() => remove(c)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-accent`}>Delete</button>
                 </div>
               </div>
             )}

@@ -91,7 +91,7 @@ export default function PostEditor() {
         Published (visible on the website)
       </label>
 
-      {error && <p role="alert" className="text-red-400">{error}</p>}
+      {error && <p role="alert" className="text-accent">{error}</p>}
       <div className="flex gap-3">
         <button type="submit" className={`${btnPrimary} cursor-pointer`} disabled={busy}>{busy ? "Saving..." : "Save post"}</button>
         <Link to="/admin/posts" className={btnQuiet}>Cancel</Link>

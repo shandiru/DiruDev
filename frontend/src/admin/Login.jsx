@@ -44,7 +44,7 @@ export default function Login() {
           Password
           <input className={field} type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
         </label>
-        {error && <p role="alert" className="text-sm text-red-400">{error}</p>}
+        {error && <p role="alert" className="text-sm text-accent">{error}</p>}
         <button type="submit" className={`${btnPrimary} cursor-pointer`} disabled={busy}>{busy ? "Signing in..." : "Sign in"}</button>
       </form>
     </div>

@@ -7,8 +7,8 @@ export const profile = {
   summary:
     "Software engineer and freelance MERN developer. Two years of experience and 70+ projects delivered.",
   about: [
-    "I'm Dirushan, a software engineer in Sri Lanka with a BSc (Hons) in Software Engineering from the University of Kelaniya. I split my time between product work and projects for clients abroad.",
-    "As a freelancer, I work directly with UK clients from the first conversation through launch and support. At Amplifyd in Colombo, I build and maintain Laravel and WordPress products for Australian clients. I enjoy the practical part of the job: understanding what is slowing a team down, then shipping a fix people can use.",
+    "I'm Dirushan, a software engineer based in Sri Lanka with a BSc (Hons) in Software Engineering from the University of Kelaniya. I now work across product teams and freelance projects.",
+    "I work directly with UK clients on websites and MERN applications, from the first requirements through launch and support. At Amplifyd in Colombo, I build and maintain Laravel and WordPress products for Australian clients. A lot of my work is improving what already exists: tracking down bugs, speeding things up, and making the next change easier.",
   ],
 };
 
@@ -17,17 +17,17 @@ export const projects = [
     name: "Figma to Code",
     url: "https://figma-to-code.imdiru.online/",
     own: true,
-    text: "Converts Figma layouts into front-end code, reducing the gap between design and implementation.",
+    text: "My independent tool for turning Figma layouts into front-end code and getting from design to a working page faster.",
   },
   {
     name: "Ice Arena",
     url: "https://icearena.com.au/",
-    text: "Session schedules, lesson information, party packages and booking links for an ice rink in Adelaide.",
+    text: "A clear home for session times, lessons, parties and bookings at an ice rink in Adelaide.",
   },
   {
     name: "Posture Care Chair",
     url: "https://posturecarechair.au/",
-    text: "Product information and enquiry paths for a South Australian maker of made-to-measure chairs and recliners.",
+    text: "Product pages and enquiry paths for a South Australian maker of made-to-measure chairs and recliners.",
   },
   {
     name: "Unite4Kids",
@@ -37,12 +37,12 @@ export const projects = [
   {
     name: "Broadway Remapping",
     url: "https://broadwayremapping.co.uk/",
-    text: "Service pages for a UK vehicle remapping business. I set up Google Search Console and indexed every page.",
+    text: "Service pages for a UK vehicle remapping business, with Search Console set up and pages indexed.",
   },
   {
     name: "BoxFit Coaching",
     url: "https://boxfitcoaching.co.uk/",
-    text: "Coaching information and contact details for a boxing and fitness trainer in the UK.",
+    text: "A straightforward site for a UK boxing and fitness coach to explain training and take enquiries.",
   },
 ];
 

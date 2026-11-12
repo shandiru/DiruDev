@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
-/* A three-colour palette: ink, paper and warm orange. */
+/* Portfolio palette: charcoal, soft grey and pale pink. */
 :root {
-  --bg: #111416;
-  --ink: #f2eee7;
-  --accent: #f2a65a;
-  --surface: color-mix(in srgb, var(--bg) 88%, var(--ink));
-  --line: color-mix(in srgb, var(--bg) 72%, var(--ink));
-  --muted: color-mix(in srgb, var(--ink) 66%, var(--bg));
+  --bg: #2b2d31;
+  --ink: #D9DADC;
+  --accent: #FFC9C9;
+  --surface: var(--bg);
+  --line: color-mix(in srgb, var(--ink) 22%, transparent);
+  --muted: var(--ink);
   --on-accent: var(--bg);
   color-scheme: dark;
 }
@@ -40,7 +40,6 @@
     z-index: 0;
     inset: 0;
     pointer-events: none;
-    background-image: linear-gradient(to bottom, color-mix(in srgb, var(--ink) 2%, transparent), transparent 30rem);
     content: "";
   }
   #root { position: relative; z-index: 1; min-height: 100vh; }
@@ -52,7 +51,7 @@
 }
 
 .project-panel {
-  background: var(--surface);
+  background: var(--bg);
 }
 .project-panel::before {
   position: absolute;
@@ -103,3 +102,24 @@
 .prose-lite pre code { border: 0; padding: 0; background: none; }
 .prose-lite img { max-width: 100%; border: 1px solid var(--line); }
 .prose-lite hr { border-color: var(--line); }
+
+.section-heading { max-width: 16ch; }
+.timeline-entry { border-left: 1px solid var(--line); padding-left: 1.25rem; }
+.timeline-entry::before {
+  position: absolute;
+  left: -4px;
+  top: 0.45rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--accent);
+  content: "";
+}
+.card-link { transition: border-color 180ms ease; }
+.tech-track svg { color: var(--accent); }
+
+select option { background: var(--bg); color: var(--ink); }
+
+@media (max-width: 639px) {
+  .timeline-entry { padding-left: 1rem; }
+}

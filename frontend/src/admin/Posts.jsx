@@ -22,7 +22,7 @@ export default function Posts() {
         <h1 className="text-2xl font-bold tracking-tight">Blog posts</h1>
         <Link to="/admin/posts/new" className={`${btnPrimary} !py-2 text-sm`}>New post</Link>
       </div>
-      {(error || err) && <p className="text-red-400">{error || err}</p>}
+      {(error || err) && <p className="text-accent">{error || err}</p>}
       {loading && !data && <p className="text-muted">Loading...</p>}
       {data?.length === 0 && <p className="text-muted">No posts yet. Create your first one.</p>}
       <ul className="grid gap-3">
@@ -37,7 +37,7 @@ export default function Posts() {
             <div className="flex w-full flex-wrap gap-2 sm:w-auto">
               {p.published && <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer" className={`${btnQuiet} !py-1.5 text-sm`}>View</a>}
               <Link to={`/admin/posts/${p._id}`} className={`${btnQuiet} !py-1.5 text-sm`}>Edit</Link>
-              <button type="button" onClick={() => remove(p)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-red-400`}>Delete</button>
+              <button type="button" onClick={() => remove(p)} className={`${btnQuiet} cursor-pointer !py-1.5 text-sm text-accent`}>Delete</button>
             </div>
           </li>
         ))}

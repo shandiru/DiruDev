@@ -28,7 +28,7 @@ export default function Projects() {
         </div>
         <Link to="/admin/projects/new" className={`${btnPrimary} !py-2 text-center text-sm`}>+ Add project</Link>
       </div>
-      {(error || err) && <p role="alert" className="text-red-400">{error || err}</p>}
+      {(error || err) && <p role="alert" className="text-accent">{error || err}</p>}
       {loading && !data && <p className="text-muted">Loading projects...</p>}
       {data?.length === 0 && <div className="border border-dashed border-line bg-surface/60 p-8 text-center"><p className="font-semibold">No additional projects yet</p><p className="mt-1 text-sm text-muted">Add a project to show it on your website.</p></div>}
       <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -45,7 +45,7 @@ export default function Projects() {
             <div className="flex flex-wrap gap-2 border-t border-line pt-4">
               {project.active && <a href={project.url} target="_blank" rel="noreferrer" className={`${btnQuiet} flex-1 !py-2 text-center text-sm`}>View</a>}
               <Link to={`/admin/projects/${project._id}`} className={`${btnQuiet} flex-1 !py-2 text-center text-sm`}>Edit</Link>
-              <button type="button" onClick={() => remove(project)} className={`${btnQuiet} cursor-pointer !py-2 text-sm text-red-400`}>Delete</button>
+              <button type="button" onClick={() => remove(project)} className={`${btnQuiet} cursor-pointer !py-2 text-sm text-accent`}>Delete</button>
             </div>
           </li>
         ))}

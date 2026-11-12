@@ -32,33 +32,28 @@ function Hero() {
   return (
     <section id="top" className={`${wrap} grid gap-9 pb-14 pt-14 sm:pt-20 md:grid-cols-[1.35fr_0.65fr] md:items-end md:gap-16 md:pb-24 md:pt-32`}>
       <div>
-        <p data-hero-kicker className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-accent">Sri Lanka</p>
-        <h1 aria-label="I build websites and apps that scale." className="max-w-[18ch] text-[clamp(2.8rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.055em]">
-          {["I", "build", "websites", "and", "apps", "that", "scale."].map((word, index) => (
-            <span key={word}>
-              <span data-hero-word="" aria-hidden="true" className="inline-block">{word}</span>
-              {index < 6 ? " " : null}
-            </span>
-          ))}
+        <p data-hero-kicker className="mb-5 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent"><span className="h-px w-8 bg-accent" />Software engineer / Sri Lanka</p>
+        <h1 className="max-w-[15ch] text-[clamp(2.8rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.055em]">
+          Web apps and sites, built to work.
         </h1>
         <p data-hero-copy className="mt-7 max-w-[52ch] text-lg leading-8 text-muted">
-          I build fast, secure applications with Laravel, React and Express, along with business websites in WordPress. I also set up and support Google Analytics and Search Console.
+          I'm Dirushan. I build web applications and business websites, and help teams keep the tools they rely on running well.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <a data-hero-action href="#projects" className={btnPrimary}>View my work</a>
-          <a data-hero-action href="#contact" className={btnQuiet}>Contact me</a>
+          <a data-hero-action href="#projects" className={btnPrimary}>See selected work</a>
+          <a data-hero-action href="#contact" className={btnQuiet}>Get in touch</a>
         </div>
       </div>
       <aside className="grid content-end gap-7 md:mb-1 md:pl-8">
         <div data-hero-aside>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Freelance</p>
-          <p className="mt-2 max-w-[30ch] text-lg font-semibold leading-snug">Web projects for clients in the UK.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">01 / Freelance</p>
+          <p className="mt-2 max-w-[30ch] text-lg font-semibold leading-snug">Working directly with clients in the UK, from brief to launch.</p>
         </div>
         <div data-hero-aside>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">At Amplifyd</p>
-          <p className="mt-2 max-w-[30ch] text-lg font-semibold leading-snug">Software engineering for Australian client projects.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">02 / Amplifyd</p>
+          <p className="mt-2 max-w-[30ch] text-lg font-semibold leading-snug">Building and maintaining products for Australian clients.</p>
         </div>
-        <p className="text-sm text-muted"><span className="mr-2 text-3xl font-bold tracking-tight text-ink">70+</span> client projects</p>
+        <p className="border-t border-line pt-5 text-sm text-muted"><span className="mr-2 text-3xl font-bold tracking-tight text-accent">70+</span> projects delivered</p>
       </aside>
     </section>
   );
@@ -68,7 +63,7 @@ function TechStack() {
   return (
     <section aria-label="Technologies and services" className="border-y border-line py-7 md:py-9">
       <div className={wrap}>
-        <p className="mb-7 text-sm font-semibold uppercase tracking-[0.16em] text-muted">Tools I work with</p>
+        <p className="mb-7 text-sm font-semibold uppercase tracking-[0.16em] text-muted">A few tools in my day-to-day</p>
         <div className="tech-viewport">
           <div className="tech-track flex w-max">
             {[false, true].map((duplicate) => (
@@ -91,7 +86,7 @@ function TechStack() {
 }
 function Projects({ projects }) {
   return (
-    <Section id="projects" title="Live projects">
+    <Section id="projects" title="Selected work">
       <div className="grid gap-12 md:gap-20">
         {projects.map((p, i) => (
           <Reveal key={p.name} className="grid items-center gap-6 md:grid-cols-2 md:gap-12">
@@ -116,11 +111,11 @@ function Projects({ projects }) {
               </div>
             </a>
             <div className={i % 2 ? "md:order-1" : ""}>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-accent">Project {String(i + 1).padStart(2, "0")}</p>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-accent">{String(i + 1).padStart(2, "0")} / Project</p>
               <h3 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{p.name}</h3>
               <p className="mt-3 max-w-[48ch] leading-7 text-muted">{p.text}</p>
               <a href={p.url} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink transition hover:text-accent">
-                Visit website <span aria-hidden="true">&rarr;</span>
+                View project <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
           </Reveal>
@@ -131,11 +126,11 @@ function Projects({ projects }) {
 }
 function Experience() {
   return (
-    <Section id="experience" title="Experience">
+    <Section id="experience" title="Work, over time">
       <div className="grid gap-12">
         {experience.map((e) => (
-          <Reveal key={e.role + e.period} className="grid gap-2 md:grid-cols-[190px_1fr] md:gap-10">
-            <p className="text-sm text-muted md:pt-1.5">{e.period}</p>
+          <Reveal key={e.role + e.period} className="timeline-entry relative grid gap-2 pb-2 md:grid-cols-[190px_1fr] md:gap-10">
+            <p className="text-sm text-accent md:pt-1.5">{e.period}</p>
             <div>
               <h3 className="text-xl font-bold tracking-tight">{e.role}</h3>
               <p className="mt-0.5 text-muted">{e.company}</p>
@@ -156,7 +151,7 @@ function Experience() {
 
 function About() {
   return (
-    <Section id="about" title="About">
+    <Section id="about" title="A little about me">
       <Reveal className="grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-16">
         <div>
           {profile.about.map((t) => (
@@ -168,7 +163,7 @@ function About() {
         <dl className="grid content-start gap-5">
           {skills.map((s) => (
             <div key={s.group}>
-              <dt className="font-semibold">{s.group}</dt>
+              <dt className="font-semibold text-accent">{s.group}</dt>
               <dd className="text-muted">{s.items}</dd>
             </div>
           ))}
@@ -185,11 +180,11 @@ function LatestPosts() {
   }, []);
   if (!posts.length) return null; // nothing published yet (or backend offline): hide section
   return (
-    <Section id="blog" title="From the blog">
+    <Section id="blog" title="Notes from the work">
       <div className="grid gap-6 md:grid-cols-3">
         {posts.map((p) => (
           <Reveal key={p.slug}>
-            <Link to={`/blog/${p.slug}`} className="block h-full  border border-line bg-surface p-5 transition hover:border-accent">
+            <Link to={`/blog/${p.slug}`} className="card-link block h-full border border-line bg-surface p-5 hover:border-accent">
               <p className="text-xs text-muted">{fmtDate(p.publishedAt)}</p>
               <h3 className="mt-2 text-lg font-bold tracking-tight">{p.title}</h3>
               {p.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted">{p.excerpt}</p>}
@@ -218,9 +213,9 @@ function Contact() {
       <div className={wrap}>
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
           <Reveal>
-            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-accent">Contact / 06</p>
-            <h2 className="max-w-[12ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.05em]">Have a project? Let's talk.</h2>
-            <p className="mt-5 max-w-[38ch] leading-7 text-muted">Share what you need, your timeline, and how to reach you. I take on selected freelance projects alongside my engineering work.</p>
+            <p className="mb-5 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em] text-accent"><span className="h-px w-8 bg-accent" />Contact</p>
+            <h2 className="max-w-[12ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.05em]">Have something in mind?</h2>
+            <p className="mt-5 max-w-[38ch] leading-7 text-muted">Tell me a little about the project and what you need. I’ll get back to you by email.</p>
             <a href={`mailto:${profile.email}`} className="mt-8 inline-block text-lg font-semibold text-accent [overflow-wrap:anywhere] hover:text-ink">
               {profile.email}
             </a>

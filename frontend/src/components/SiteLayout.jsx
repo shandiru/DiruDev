@@ -15,12 +15,13 @@ function Header() {
       <div className={`${wrap} relative flex h-16 items-center justify-between gap-4`}>
         <Link to="/" aria-label="DIRU DEV" className="inline-flex shrink-0 items-baseline gap-2 tracking-[-0.06em]">
           <span className="text-xl font-black text-ink">DIRU</span>
-          <span className="border border-accent px-1.5 py-0.5 text-[0.65rem] font-bold tracking-[0.16em] text-accent">DEV</span>
+          <span className="border border-accent px-1.5 py-0.5 text-[0.65rem] font-bold tracking-[0.16em] text-accent">PORTFOLIO</span>
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-5 text-sm font-medium sm:gap-7 md:flex">
-          <Link to="/#projects" className="text-muted hover:text-ink">Projects</Link>
-          <Link to="/#experience" className="text-muted hover:text-ink">Experience</Link>
-          <Link to="/blog" className="text-muted hover:text-ink">Blog</Link>
+          <Link to="/#about" className="text-muted hover:text-accent">About</Link>
+          <Link to="/#projects" className="text-muted hover:text-accent">Work</Link>
+          <Link to="/#experience" className="text-muted hover:text-accent">Experience</Link>
+          <Link to="/blog" className="text-muted hover:text-accent">Writing</Link>
           <Link to="/#contact" data-track="Header: Contact" className={`${btnPrimary} !py-2 text-sm`}>Contact</Link>
         </nav>
         <button
@@ -42,9 +43,10 @@ function Header() {
       {menuOpen && (
         <nav id="mobile-navigation" aria-label="Mobile" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-bg px-5 py-3 md:hidden">
           <div className={`${wrap} flex flex-col items-stretch gap-1 text-sm font-medium`}>
-            <Link to="/#projects" className="px-2 py-3 text-muted hover:text-ink">Projects</Link>
-            <Link to="/#experience" className="px-2 py-3 text-muted hover:text-ink">Experience</Link>
-            <Link to="/blog" className="px-2 py-3 text-muted hover:text-ink">Blog</Link>
+            <Link to="/#about" className="px-2 py-3 text-muted hover:text-accent">About</Link>
+            <Link to="/#projects" className="px-2 py-3 text-muted hover:text-accent">Work</Link>
+            <Link to="/#experience" className="px-2 py-3 text-muted hover:text-accent">Experience</Link>
+            <Link to="/blog" className="px-2 py-3 text-muted hover:text-accent">Writing</Link>
             <Link to="/#contact" data-track="Header: Contact" className={`${btnPrimary} mt-2 justify-center text-sm`}>Contact</Link>
           </div>
         </nav>
@@ -134,10 +136,12 @@ export default function SiteLayout() {
         <Outlet />
       </main>
       <footer className="border-t border-line">
-        <div className={`${wrap} flex flex-wrap items-center justify-between gap-3 py-8 text-sm text-muted`}>
-          <span>Based in {profile.location}.</span>
-          <div className="flex items-center gap-5">
-            <Link to="/blog" className="hover:text-ink">Blog</Link>
+        <div className={`${wrap} flex flex-col gap-5 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between`}>
+          <span><span className="font-semibold text-ink">{profile.name}</span> - Based in {profile.location}</span>
+          <div className="flex flex-wrap items-center gap-5">
+            <Link to="/#projects" className="hover:text-accent">Work</Link>
+            <Link to="/blog" className="hover:text-accent">Writing</Link>
+            <a href={`mailto:${profile.email}`} className="hover:text-accent">Email</a>
           </div>
         </div>
       </footer>

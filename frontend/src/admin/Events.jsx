@@ -39,7 +39,7 @@ export default function Events() {
         <input className={`${field} !w-44 !py-2`} placeholder="IP address" value={ip} onChange={reset(setIp)} />
       </div>
 
-      {error && <p className="text-red-400">{error}</p>}
+      {error && <p className="text-accent">{error}</p>}
       {loading && !data && <p className="text-muted">Loading...</p>}
 
       {data && (

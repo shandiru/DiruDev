@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 export const wrap = "mx-auto w-full max-w-[1080px] px-5 sm:px-8";
 export const btn =
-  "inline-flex items-center justify-center  border px-5 py-2.5 text-[0.95rem] font-semibold transition";
-export const btnPrimary = `${btn} border-accent bg-accent text-on-accent hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed`;
-export const btnQuiet = `${btn} border-line hover:border-accent`;
+  "inline-flex min-h-11 items-center justify-center border px-5 py-2.5 text-[0.95rem] font-semibold transition-colors";
+export const btnPrimary = `${btn} border-accent bg-accent text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60`;
+export const btnQuiet = `${btn} border-line hover:border-accent hover:text-accent`;
 export const field =
-  "w-full  border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
+  "w-full border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
 
 /* Fades content in when it scrolls into view.
    Content is visible by default and only hidden after we know the observer works,
@@ -55,7 +55,7 @@ export function Section({ id, title, children }) {
   return (
     <section id={id} className={`${wrap} py-16 md:py-24`}>
       <Reveal>
-        <h2 className="mb-10 text-[clamp(1.8rem,4vw,2.6rem)] font-bold leading-tight tracking-[-0.03em] md:mb-14">
+      <h2 className="section-heading mb-10 text-[clamp(1.8rem,4vw,2.6rem)] font-bold leading-tight tracking-[-0.04em] md:mb-14">
           {title}
         </h2>
       </Reveal>
